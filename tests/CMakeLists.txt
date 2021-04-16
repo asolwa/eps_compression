@@ -1,11 +1,13 @@
+cmake_minimum_required(VERSION 3.2)
+
 set(BINARY ${CMAKE_PROJECT_NAME}_tests)
 
-file(GLOB_RECURSE TEST_SOURCES LIST_DIRECTORIES false *.h *.cpp)
+add_subdirectory(lib/googletest)
 
-set(SOURCES ${TEST_SOURCES})
+include_directories(lib/googletest/googletest/include)
 
-add_executable(${BINARY} ${TEST_SOURCES})
+set(SOURCE_FILES main.cpp src/test.cpp)
 
-add_test(NAME ${BINARY} COMMAND ${BINARY})
-
+add_executable(${BINARY} ${SOURCE_FILES})
 target_link_libraries(${BINARY} PUBLIC ${CMAKE_PROJECT_NAME}_lib gtest)
+install(TARGETS ${BINARY} DESTINATION bin)
