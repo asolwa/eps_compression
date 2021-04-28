@@ -1,6 +1,11 @@
+#include "eps_loader.h"
 #include <iostream>
 
 int main() {
-    std::cout << "Hello world" << std::endl;
-    return 0;
-}
+  EpsLoader a("przyklad.eps");
+  std::cout << "Hello world" << std::endl;
+  a.load();
+  a.compress_eps();
+
+  return 0;
+};
