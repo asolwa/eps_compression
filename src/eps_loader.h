@@ -22,8 +22,12 @@ public:
     void compress_eps();
 
 private:
+    void load_header(string &is);
+    void load_instructions(string &is);
+
     string name_;
     string data;
+    stringstream header_;
     stringstream config_;
     stringstream draw_cmd_;
 

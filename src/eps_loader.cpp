@@ -16,51 +16,53 @@ EpsLoader::EpsLoader(string name)
     aliases["lineto"] = "lineto";
 }
 
+void EpsLoader::load_header(string &is)
+{
+    config_ << is << endl;
+}
+
+void EpsLoader::load_instructions(string &is)
+{
+
+}
+
 void EpsLoader::load()
 {
-    int temp;
     cout << "Wczytywanie pliku " << name_ <<  " eps do kompresji" << endl;
     ifstream MyReadFile(name_);
 
     bool data = false;
     string myText;
-    int start_pos;
-    int finish_pos;
+    smatch reg_value;
+    int start_pos, finish_pos;
+
+    regex regex_header("^%.+$");
+    regex regex_alias("^\\/(\\w+) +\\{ (\\w+) \\} bind def$");
+    regex regex_ins("([\\d\\.]+) ([\\d\\.]+) ([\\w])");
+
+
+
     while (getline(MyReadFile, myText))
     {
         // zapisz bo to metadane eps/ konfiguracja
-        if (myText.rfind("%%", 0) == 0)
-            config_ << myText << endl;
-        // proces aliasy
-        start_pos = myText.rfind("/");
-        if (start_pos >= 0)
+        if (regex_match(myText, regex_header))
         {
-            string key, value;
-            smatch reg_value;
-            finish_pos = myText.find(' ');
-            key = myText.substr(start_pos + 1, finish_pos);
-            regex e("\\{ ([^\\s]+) \\}");
-            if (regex_search(myText, reg_value, e))
-                value = reg_value[1];
+            header_ << myText << endl;
+
+        } else if (regex_search(myText, reg_value, regex_alias)) {
+            // proces aliasy
+            string key = reg_value[1];
+            string value = reg_value[2];
             aliases[key] = value;
+        } else if (regex_search(myText, reg_value, regex_ins)) {
+            //process liczby
+            float x = stof(reg_value[1]);
+            float y = stof(reg_value[2]);
+            ins_.push_back(EpsInstruction(x, y, reg_value[3]));
+        } else if (myText != string("newpath")) {
+            // draw commands
+            draw_cmd_ << myText << endl;
         }
-        //process liczby
-        if (data)
-        {
-            smatch reg_value;
-            regex e("([\\d\\.]+) ([\\d\\.]+) ([\\w])");
-            if (regex_search(myText, reg_value, e))
-            {
-                float x = stof(reg_value[1]);
-                float y = stof(reg_value[2]);
-                ins_.push_back(EpsInstruction(x, y, reg_value[3]));
-            } else {
-                draw_cmd_ << myText << endl;
-            }
-        }
-        if (myText == string("newpath"))
-            data = true;
-        continue;
     }
 
     MyReadFile.close();
@@ -68,9 +70,11 @@ void EpsLoader::load()
 
 void EpsLoader::compress_eps()
 {
-    cout << name_ << "Zapisywanie" << endl;
+    cout << name_ << "Zapisywanie do pliku" << endl;
     ofstream MyReadFile("out.eps");
 
+    //write header
+    MyReadFile << header_.str() << endl;
     //write config
     MyReadFile << config_.str() << endl;
 
@@ -79,8 +83,7 @@ void EpsLoader::compress_eps()
         MyReadFile<<"/" << el.first << "   { " << el.second <<" } bind def" << endl;
     }
 
-    MyReadFile << endl;
-    int a;
+    MyReadFile << "newpath" << endl;
     int num = 0;
     for(auto& el: ins_) {
         if( el.cmd_ == "lineto")
