@@ -7,48 +7,10 @@
 #include <memory>
 #include <unordered_map>
 #include <utility>
+#include "eps_objects.h"
+#include "parser.h"
 
 using namespace std;
-
-class EpsData {
-public:
-    virtual std::string str() = 0;
-};
-
-class Header : public EpsData {
-    std::string data_;
-public:
-    Header(std::string data);
-    virtual std::string str();
-};
-
-class Instruction : public EpsData {
-    std::string cmd_;
-    float x_, y_;
-public:
-    Instruction(float x, float y, std::string cmd);
-    virtual std::string str();
-};
-
-class Alias : public EpsData {
-    std::pair<std::string, std::string> map_;
-public:
-    Alias(std::pair<std::string, std::string> map);
-    virtual std::string str();
-};
-
-class Command : public EpsData {
-    std::string data_;
-public:
-    Command(std::string data);
-    virtual std::string str();
-};
-
-struct EpsInstruction {
-    float x_, y_;
-    string cmd_;
-    EpsInstruction(float x, float y, string cmd);
-};
 
 using EpsDataPtr = std::shared_ptr<EpsData>;
 using EpsDatas = std::vector<EpsDataPtr>;
@@ -65,6 +27,7 @@ private:
     string in_name_;
     string out_name_;
     EpsDatas eps_datas;
+    ParserFactory parser; 
 };
 
 #endif /* EPS_LOADER */

@@ -5,7 +5,7 @@ int main() {
   std::cout << "Hello world" << std::endl;
   EpsLoader a;
   a.setInFile("przyklad.eps");
-  a.setOutFile("try.eps");
+  a.setOutFile("try1.eps");
   a.load();
   a.write();
 
