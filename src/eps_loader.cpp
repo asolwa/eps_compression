@@ -16,16 +16,6 @@ EpsLoader::EpsLoader(string name)
     aliases["lineto"] = "lineto";
 }
 
-void EpsLoader::load_header(string &is)
-{
-    config_ << is << endl;
-}
-
-void EpsLoader::load_instructions(string &is)
-{
-
-}
-
 void EpsLoader::process_line(string &line)
 {
     smatch reg_value;
@@ -60,9 +50,7 @@ void EpsLoader::load()
     string line;
 
     while (getline(MyReadFile, line))
-    {
         process_line(line);
-    }
 
     MyReadFile.close();
 }
