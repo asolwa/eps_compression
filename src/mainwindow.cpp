@@ -29,8 +29,8 @@ void MainWindow::on_compressButton_clicked()
 void MainWindow::on_openFileButton_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this, "Choose file to open", QDir::homePath(), ".eps (*.eps)");
-    openedFileName = fileName;
-    if(openedFileName != "")
+    openedFileName = fileName.toStdString();
+    if(fileName != "")
         QMessageBox::information(this," ",fileName);
 }
 
