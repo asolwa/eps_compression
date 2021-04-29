@@ -2,10 +2,12 @@
 #include <iostream>
 
 int main() {
-  EpsLoader a("przyklad.eps");
   std::cout << "Hello world" << std::endl;
+  EpsLoader a;
+  a.setInFile("przyklad.eps");
+  a.setOutFile("try.eps");
   a.load();
-  a.compress_eps();
+  a.write();
 
   return 0;
 };

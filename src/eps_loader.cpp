@@ -5,76 +5,108 @@
 #include <string>
 #include <regex>
 
-using namespace std;
-
-EpsInstruction::EpsInstruction(float x, float y, string cmd)
+EpsInstruction::EpsInstruction(float x, float y, std::string cmd)
     : x_(x), y_(y), cmd_(cmd) {}
 
-EpsLoader::EpsLoader(string name)
-    : name_(name)
-{
-    aliases["lineto"] = "lineto";
+Command::Command(std::string data) : data_(data) {}
+std::string Command::str(){ return data_; }
+
+Header::Header(std::string data) : data_(data) {}
+std::string Header::str(){ return data_; }
+
+Instruction::Instruction(float x, float y, std::string cmd)
+    : x_(x), y_(y), cmd_(cmd) {}
+std::string Instruction::str(){
+    std::ostringstream result;
+    result << x_ << " " << y_ << " " << cmd_;
+    return result.str();
 }
 
-void EpsLoader::process_line(string &line)
-{
-    smatch reg_value;
+Alias::Alias(std::pair<std::string, std::string> map) : map_(map) {}
+std::string Alias::str(){ 
+    std::ostringstream result;
+    result << "/" << map_.first << "  " 
+        << "{ " << map_.second << " } bind def";
+    return result.str();
+}
 
-    regex regex_header("^%.+$");
-    regex regex_alias("^\\/(\\w+) +\\{ (\\w+) \\} bind def$");
-    regex regex_ins("([\\d\\.]+) ([\\d\\.]+) ([\\w])");
+class UnknownTypeException : public std::exception { };
 
-    if (regex_match(line, regex_header)) {
-        // zapisz bo to metadane eps/ konfiguracja
-        header_ << line << endl;
-    } else if (regex_search(line, reg_value, regex_alias)) {
-        // proces aliasy
-        string key = reg_value[1];
-        string value = reg_value[2];
-        aliases[key] = value;
-    } else if (regex_search(line, reg_value, regex_ins)) {
-        //process liczby
-        float x = stof(reg_value[1]);
-        float y = stof(reg_value[2]);
-        ins_.push_back(EpsInstruction(x, y, reg_value[3]));
-    } else if (line != string("newpath")) {
-        // draw commands
-        draw_cmd_ << line << endl;
+class EpsDataFactory {
+public:
+    static EpsDataFactory& getInstance() {
+        static EpsDataFactory instance;
+        return instance;
     }
+
+    EpsDataPtr create(std::istream& ifs) {
+        std::string line;
+        smatch reg_value;
+
+        regex regex_header("^%.+$");
+        regex regex_alias("^\\/(\\w+) +\\{ (\\w+) \\} bind def$");
+        regex regex_ins("([\\d\\.]+) ([\\d\\.]+) ([\\w])");
+
+        getline(ifs, line);
+
+        if (regex_match(line, regex_header)) {
+            // zapisz bo to metadane eps/ konfiguracja
+            return std::shared_ptr<EpsData>(new Header(line));
+        } else if (regex_search(line, reg_value, regex_alias)) {
+            // proces aliasy
+            return std::shared_ptr<Alias>(
+                new Alias(std::make_pair(reg_value[1], reg_value[2]))
+            );
+        } else if (regex_search(line, reg_value, regex_ins)) {
+            //process liczby
+            float x = stof(reg_value[1]);
+            float y = stof(reg_value[2]);
+            std::string cmd = reg_value[3].str();
+            return std::shared_ptr<EpsData>(
+                new Instruction(x, y, cmd)
+            );
+        }
+        else {
+            return std::shared_ptr<EpsData>(new Command(line));
+        }
+    }
+};
+
+void EpsLoader::setInFile(std::string name) { in_name_ = name; };
+void EpsLoader::setOutFile(std::string name) { out_name_ = name; };
+
+EpsDatas EpsLoader::readFromFile(std::ifstream& ifs)
+{
+    EpsDatas datas_;
+    while(ifs) {
+        try{
+            EpsDataPtr data = EpsDataFactory::getInstance().create(ifs);
+            datas_.push_back(data);
+        }
+        catch(UnknownTypeException&) {}
+    }
+    return datas_;
 }
 
 void EpsLoader::load()
 {
-    cout << "Wczytywanie pliku " << name_ <<  " eps do kompresji" << endl;
-    ifstream MyReadFile(name_);
-    string line;
+    cout << "Wczytywanie pliku " << in_name_ <<  " eps do kompresji" << endl;
 
-    while (getline(MyReadFile, line))
-        process_line(line);
+    ifstream in_file(in_name_);
+    eps_datas = readFromFile(in_file);
 
-    MyReadFile.close();
+    in_file.close();
 }
 
-void EpsLoader::compress_eps()
+
+void EpsLoader::write()
 {
-    cout << name_ << "Zapisywanie do pliku" << endl;
-    ofstream MyReadFile("out.eps");
+    cout << "Zapisywanie do pliku " << out_name_ << endl;
 
-    //write header
-    MyReadFile << header_.str() << endl;
-    //write config
-    MyReadFile << config_.str() << endl;
+    ofstream out_file(out_name_);
 
-    //write macros
-    for (auto& el: aliases) {
-        MyReadFile<<"/" << el.first << "   { " << el.second <<" } bind def" << endl;
-    }
+    for(auto data : eps_datas)
+        out_file << data->str() << endl;
 
-    MyReadFile << "newpath" << endl;
-    for(auto& el: ins_) {
-        MyReadFile<< el.x_ << " " << el.y_ << " " << el.cmd_ << endl;
-    }
-    MyReadFile << draw_cmd_.str() << endl;
-
-    MyReadFile.close();
+    out_file.close();
 }
