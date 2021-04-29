@@ -19,6 +19,7 @@ public:
     explicit EpsLoader(string name);
     void load();
     void process_metadata();
+    void process_line(std::string &line);
     void compress_eps();
 
 private:
