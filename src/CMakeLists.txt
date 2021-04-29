@@ -1,9 +1,37 @@
 set(BINARY ${CMAKE_PROJECT_NAME})
 
-file(GLOB_RECURSE SOURCES LIST_DIRECTORIES true *.h *.cpp)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-set(SOURCES ${SOURCES})
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
 
-add_executable(${BINARY}_run ${SOURCES})
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
 
-add_library(${BINARY}_lib STATIC ${SOURCES})
+set(SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.ui)
+
+SET(MODULE_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.cpp)
+
+
+if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
+    qt_add_executable(${BINARY}_run
+        ${SOURCES}
+    )
+else()
+     add_executable(${BINARY}_run
+           ${SOURCES}
+        )
+endif()
+
+target_link_libraries(${BINARY}_run PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+
+add_library(${BINARY}_lib STATIC ${MODULE_SOURCES})
+
+target_link_libraries(${BINARY}_lib PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
