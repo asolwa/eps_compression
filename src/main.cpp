@@ -1,13 +1,10 @@
-#include <iostream>
-#include "eps_loader.h"
+#include <QApplication>
+#include "mainwindow.h"
 
-int main() {
-  std::cout << "Hello world" << std::endl;
-  EpsLoader a;
-  a.setInFile("przyklad.eps");
-  a.setOutFile("try1.eps");
-  a.load();
-  a.write();
-
-  return 0;
-};
+int main(int argc, char *argv[])
+{
+    QApplication a(argc, argv);
+    MainWindow w;
+    w.show();
+    return a.exec();
+}
