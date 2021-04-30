@@ -8,9 +8,7 @@
 #include <unordered_map>
 #include <utility>
 #include "eps_objects.h"
-#include "parser.h"
-
-using namespace std;
+#include "eps_parser.h"
 
 using EpsDataPtr = std::shared_ptr<EpsData>;
 using EpsDatas = std::vector<EpsDataPtr>;
@@ -24,10 +22,10 @@ public:
     EpsDatas readFromFile(std::ifstream& ifs);
 
 private:
-    string in_name_;
-    string out_name_;
+    std::string in_name_;
+    std::string out_name_;
     EpsDatas eps_datas;
-    ParserFactory parser; 
+    EpsParser parser; 
 };
 
 #endif /* EPS_LOADER */

@@ -18,23 +18,18 @@ EpsDatas EpsLoader::readFromFile(std::ifstream& ifs)
 
 void EpsLoader::load()
 {
-    cout << "Wczytywanie pliku " << in_name_ <<  " eps do kompresji" << endl;
-
-    ifstream in_file(in_name_);
+    std::ifstream in_file(in_name_);
     eps_datas = readFromFile(in_file);
 
     in_file.close();
 }
 
-
 void EpsLoader::write()
 {
-    cout << "Zapisywanie do pliku " << out_name_ << endl;
-
-    ofstream out_file(out_name_);
+    std::ofstream out_file(out_name_);
 
     for(auto data : eps_datas)
-        out_file << data->str() << endl;
+        out_file << data->str() << std::endl;
 
     out_file.close();
 }
