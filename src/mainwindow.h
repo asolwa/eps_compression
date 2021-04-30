@@ -16,8 +16,6 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    static double squareRoot(const double a); // to be removed
-
 private slots:
     void on_compressButton_clicked();
 
