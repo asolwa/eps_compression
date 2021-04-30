@@ -1,8 +1,8 @@
+#include <gtest/gtest.h>
+#include <sstream> 
+#include <string> 
 #include "../../src/eps_objects.h"
 #include "../../src/eps_parser.h"
-#include <gtest/gtest.h>
-#include <sstream>      // std::istringstream
-#include <string> 
 
 TEST(EPSParserTest, AliasTest) {
     EpsParser parser;

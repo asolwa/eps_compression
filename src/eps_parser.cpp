@@ -1,6 +1,6 @@
+#include <regex>
 #include "eps_parser.h"
 #include "eps_objects.h"
-#include <regex>
 
 EpsDataPtr EpsParser::create(std::istream& ifs) {
     std::string line;

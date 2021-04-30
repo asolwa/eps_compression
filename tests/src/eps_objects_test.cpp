@@ -1,5 +1,5 @@
-#include "../../src/eps_objects.h"
 #include <gtest/gtest.h>
+#include "../../src/eps_objects.h"
 
 TEST(EPSObjectsTest, HeaderTest) {
     Header header_("%%BoundingBox: 0 0 302 302");

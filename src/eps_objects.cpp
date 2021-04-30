@@ -1,6 +1,6 @@
+#include <sstream>
 #include "eps_objects.h"
 
-#include <sstream>
 
 Command::Command(std::string data) : data_(data) {}
 std::string Command::str(){ return data_; }

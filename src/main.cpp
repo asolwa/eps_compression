@@ -1,5 +1,5 @@
-#include "eps_loader.h"
 #include <iostream>
+#include "eps_loader.h"
 
 int main() {
   std::cout << "Hello world" << std::endl;

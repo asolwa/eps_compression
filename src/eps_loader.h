@@ -24,8 +24,8 @@ public:
 private:
     std::string in_name_;
     std::string out_name_;
-    EpsDatas eps_datas;
-    EpsParser parser; 
+    EpsDatas eps_datas_;
+    EpsParser parser_; 
 };
 
 #endif /* EPS_LOADER */
