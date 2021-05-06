@@ -17,7 +17,10 @@ set(SOURCES
 
 SET(MODULE_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.cpp)
+        ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/eps_parser.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/eps_objects.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/eps_loader.cpp)
 
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

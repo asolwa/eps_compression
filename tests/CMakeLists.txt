@@ -1,5 +1,6 @@
 set(BINARY ${CMAKE_PROJECT_NAME}_tests)
-set(SOURCE_FILES main.cpp src/test.cpp)
+set(SOURCE_FILES main.cpp src/eps_objects_test.cpp src/eps_parser_test.cpp)
+set(CMAKE_AUTOMOC ON)
 
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
