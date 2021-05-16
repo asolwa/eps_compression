@@ -1,3 +1,7 @@
+/**
+ * \file skip_n_compressor.cpp
+ * \brief Plik zawierajacy implementacje kompresora pomijajacego co n-ty element 
+ */
 #include "skip_n_compressor.h"
 #include <iostream>
 

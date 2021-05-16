@@ -1,3 +1,7 @@
+/**
+ * \file compressor_decorator.h
+ * \brief Plik zawierajacy dekorator bazowy klas kompresji
+ */
 #ifndef BASE_COMPRESSOR_DECORATOR
 #define BASE_COMPRESSOR_DECORATOR
 

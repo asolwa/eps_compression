@@ -1,3 +1,7 @@
+/**
+ * \file skip_n_compressor.h
+ * \brief Plik zawierajacy interfejs kompresora pomijajacego co n-ty element 
+ */
 #ifndef SKIP_N_COMPRESSOR
 #define SKIP_N_COMPRESSOR
 

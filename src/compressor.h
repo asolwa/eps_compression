@@ -1,3 +1,7 @@
+/**
+ * \file compressor.h
+ * \brief Klasa bedaca interfejsem do kompresji plikow
+ */
 #ifndef COMPRESSOR
 #define COMPRESSOR
 
