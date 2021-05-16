@@ -6,9 +6,23 @@
 
 using PointData = std::vector<std::pair<float, float>>;
 
+/** 
+ * @file compressor.h
+ * @class Compressor
+ * @brief Klasa bedaca interfejsem do konkretnych metod kompresji
+ * @details Makieta obiektu kompresora, ktory wywoluje konkretne
+ *          implementacje kompressji znajdujace sie w dekoratorach
+ * 
+ * @author Adam Solawa
+ * @date 15.05.2021
+ */
 class Compressor {
 public:
-    Compressor();
+    /** 
+     * Funkcja delegujaca kompresje wektora punktow do konkretnych kompresorow dekoratorow
+     * 
+     * @param data Wektor punktow do kompresji
+     */
     virtual PointData compress(PointData data);
     virtual ~Compressor();
 };
