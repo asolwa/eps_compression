@@ -23,6 +23,7 @@ SET(MODULE_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/compressor_decorator.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/compressor.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/skip_n_compressor.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/radius_compressor.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/eps_loader.cpp)
 
 

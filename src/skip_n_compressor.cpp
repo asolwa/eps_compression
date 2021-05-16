@@ -3,7 +3,6 @@
  * \brief Plik zawierajacy implementacje kompresora pomijajacego co n-ty element 
  */
 #include "skip_n_compressor.h"
-#include <iostream>
 
 SkipNCompressor::SkipNCompressor(std::shared_ptr<Compressor> dec, int skip)
     : BaseCompressorDecorator(dec), skip_n_(skip) {}
