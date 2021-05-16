@@ -7,7 +7,12 @@ TEST(EPSObjectsTest, HeaderTest) {
 }
 
 TEST(EPSObjectsTest, InstructionTest) {
-    Instruction ins_(5.11, 6.12, "moveto");
+    std::vector<std::string> v;
+    v.push_back("5.11");
+    v.push_back("6.12");
+    v.push_back("moveto");
+
+    Instruction ins_(v);
     ASSERT_EQ("5.11 6.12 moveto", ins_.str());
 }
 

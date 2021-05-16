@@ -12,15 +12,19 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
 set(SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.ui)
+        ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.ui
+        ${CMAKE_CURRENT_SOURCE_DIR}/eps_parser.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/eps_objects.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/eps_loader.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/converter.cpp)
 
 SET(MODULE_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.h
         ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/eps_parser.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/eps_objects.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/eps_loader.cpp)
+        ${CMAKE_CURRENT_SOURCE_DIR}/eps_loader.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/converter.cpp)
 
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

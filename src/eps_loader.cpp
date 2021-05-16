@@ -28,8 +28,17 @@ void EpsLoader::write()
 {
     std::ofstream out_file(out_name_);
 
-    for(auto data : eps_datas_)
+    for(auto& data : eps_datas_)
         out_file << data->str() << std::endl;
 
     out_file.close();
 }
+
+void EpsLoader::print(){
+    for()
+  //converter_.print();
+}
+
+void EpsLoader::convert() {
+    converter_.convert(eps_datas_);
+};

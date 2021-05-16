@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <string>
+#include "eps_loader.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -24,5 +25,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
     std::string openedFileName;
+    EpsLoader fileLoader;
 };
 #endif // MAINWINDOW_H

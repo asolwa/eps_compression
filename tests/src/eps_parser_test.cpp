@@ -4,14 +4,7 @@
 #include "../../src/eps_objects.h"
 #include "../../src/eps_parser.h"
 
-TEST(EPSParserTest, AliasTest) {
-    EpsParser parser;
-    std::string line = "/m { moveto } bind def";
-    std::istringstream iss (line);
 
-    EpsDataPtr obj = parser.create(iss);
-    ASSERT_EQ("/m  { moveto } bind def", obj->str());
-}
 
 TEST(EPSParserTest, HeaderTest) {
     EpsParser parser;
@@ -32,6 +25,24 @@ TEST(EPSParserTest, InstructionTest) {
 }
 
 TEST(EPSParserTest, CommandTest) {
+    EpsParser parser;
+    std::string line = "2 setlinewidth";
+    std::istringstream iss (line);
+
+    EpsDataPtr obj = parser.create(iss);
+    ASSERT_EQ("2 setlinewidth", obj->str());
+}
+
+TEST(EPSParserTest, AliasTest) {
+    EpsParser parser;
+    std::string line = "/m  { moveto } bind def";
+    std::istringstream iss (line);
+
+    EpsDataPtr obj = parser.create(iss);
+    ASSERT_EQ("/m  { moveto } bind def", obj->str());
+}
+
+TEST(EPSParserTest, BasicInstructionTest) {
     EpsParser parser;
     std::string line = "newpath";
     std::istringstream iss (line);

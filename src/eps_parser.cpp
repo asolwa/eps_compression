@@ -7,8 +7,9 @@ EpsDataPtr EpsParser::create(std::istream& ifs) {
     std::smatch reg_value;
 
     std::regex regex_header("^%.+$");
-    std::regex regex_alias("^\\/(\\w+) +\\{ (\\w+) \\} bind def$");
-    std::regex regex_ins("([\\d\\.]+) ([\\d\\.]+) ([\\w])");
+    std::regex regex_alias("^\\/(\\w+) +\\{ (.+) \\} bind def$");
+    std::regex regex_ins("^([\\d\\.]+) ([\\d\\.]+) ([\\w])$");
+    std::regex regex_basic_ins("^(\\w+)$");
 
     getline(ifs, line);
 
@@ -16,18 +17,26 @@ EpsDataPtr EpsParser::create(std::istream& ifs) {
         return std::shared_ptr<EpsData>(new Header(line));
     }
     
-    if (regex_search(line, reg_value, regex_alias)) {
+    else if (regex_search(line, reg_value, regex_alias)) {
         return std::shared_ptr<Alias>(
             new Alias(std::make_pair(reg_value[1], reg_value[2]))
         );
     }
     
-    if (regex_search(line, reg_value, regex_ins)) {
-        float x = stof(reg_value[1]);
-        float y = stof(reg_value[2]);
-        std::string cmd = reg_value[3].str();
+    else if (regex_search(line, reg_value, regex_ins)) {
+        std::vector<std::string> v;
+        v.push_back(reg_value[1]);
+        v.push_back(reg_value[2]);
+        v.push_back(reg_value[3]);
         return std::shared_ptr<EpsData>(
-            new Instruction(x, y, cmd)
+            new Instruction(v)
+        );
+    }
+    else if (regex_search(line, reg_value, regex_basic_ins)){
+        std::vector<std::string> v;
+        v.push_back(reg_value[1]);
+        return std::shared_ptr<EpsData>(
+                new Instruction(v)
         );
     }
 
