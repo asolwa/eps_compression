@@ -20,6 +20,9 @@ SET(MODULE_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/eps_parser.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/eps_objects.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/compressor_decorator.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/compressor.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/skip_n_compressor.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/eps_loader.cpp)
 
 
