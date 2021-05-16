@@ -23,7 +23,15 @@ using Point = std::pair<float, float>;
  */
 class RadiusCompressor : public BaseCompressorDecorator {
 private:
+    /** Wartosc graniczna odlaglosci dla ktorej odrzucane sa pkt */
     int thr_;
+    /** 
+     * Funckja sprawdzajaca czy dane 2 pkt sa w odleglosci mniejszej niz thr_
+     * 
+     * @param a Pierwszy punkt, zawierajacy wspolzedne x i y
+     * @param b Drugi punkt, zawierajacy wspolzedne x i y
+     * @return Zwraca wartosc logina okreslajaca czy punkty sa oddalone o mniej niz thr_
+     */
     bool closer_than_radius(const Point &a, const Point &b);
 public: 
     /** 
