@@ -22,8 +22,8 @@ PointData RadiusCompressor::compress(PointData data) {
     int counter = 0;
     for(auto &element : comp_data) {
         if (
-            element == comp_data.front() ||
-            element == comp_data.back() ||
+            &element == &comp_data.front() ||
+            &element == &comp_data.back() ||
             !closer_than_radius(last_point, element)
         ){
             comp_result.push_back(element);

@@ -13,8 +13,9 @@ PointData SkipNCompressor::compress(PointData data) {
     PointData comp_result;
     int counter = 0;
     for(auto &element : comp_data) {
-        if (counter == 0 || element == comp_data.back())
+        if (counter == 0 || &element == &comp_data.back()) {
             comp_result.push_back(element);
+        }
         counter = (++counter) % skip_n_;
     }
     return comp_result;
