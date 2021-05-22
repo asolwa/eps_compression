@@ -4,8 +4,12 @@
  */
 #include "compressor_decorator.h"
 
-BaseCompressorDecorator::BaseCompressorDecorator(std::shared_ptr<Compressor> compressor) : compressor_(compressor) {};
+namespace epsc {
 
-PointData BaseCompressorDecorator::compress(PointData data) {
-    return compressor_->compress(data);
-};
+    BaseCompressorDecorator::BaseCompressorDecorator(std::shared_ptr<Compressor> compressor) : compressor_(compressor) {};
+
+    PointData BaseCompressorDecorator::compress(PointData data) {
+        return compressor_->compress(data);
+    };
+
+}

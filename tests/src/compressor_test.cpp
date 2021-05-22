@@ -7,8 +7,8 @@
 #include "../../src/skip_n_compressor.h"
 #include "../../src/radius_compressor.h"
 
-PointData createData() {
-    PointData data;
+epsc::PointData createData() {
+    epsc::PointData data;
     data.push_back(std::make_pair(1, 1));
     data.push_back(std::make_pair(1.5, 1.5));
     data.push_back(std::make_pair(2, 2));
@@ -23,10 +23,10 @@ PointData createData() {
 int calculateNSkipLength(int input_size, int skip) { return ceil((float) (input_size - 1) / skip ) + 1 ; }
 
 TEST(CompressorTest, DummyCompressorTest) {
-    PointData data = createData();
-    std::shared_ptr<Compressor> comp_ = std::make_shared<Compressor>();
+    epsc::PointData data = createData();
+    std::shared_ptr<epsc::Compressor> comp_ = std::make_shared<epsc::Compressor>();
 
-    PointData compressed_data = comp_->compress(data);
+    epsc::PointData compressed_data = comp_->compress(data);
 
     ASSERT_EQ(data.size(), compressed_data.size());
     ASSERT_EQ(data[0], compressed_data[0]);
@@ -36,11 +36,11 @@ TEST(CompressorTest, DummyCompressorTest) {
 
 TEST(CompressorTest, SkipN2CompressorTest) {
     int skip = 2;
-    PointData data = createData();
-    std::shared_ptr<Compressor> comp_ = std::make_shared<Compressor>();
-    comp_ = std::make_shared<SkipNCompressor>(comp_);
+    epsc::PointData data = createData();
+    std::shared_ptr<epsc::Compressor> comp_ = std::make_shared<epsc::Compressor>();
+    comp_ = std::make_shared<epsc::SkipNCompressor>(comp_);
 
-    PointData compressed_data = comp_->compress(data);
+    epsc::PointData compressed_data = comp_->compress(data);
 
     ASSERT_EQ(calculateNSkipLength(data.size(), skip), compressed_data.size());
     ASSERT_EQ(data[0], compressed_data[0]);
@@ -51,11 +51,11 @@ TEST(CompressorTest, SkipN2CompressorTest) {
 
 TEST(CompressorTest, SkipN4CompressorTest) {
     int skip = 4;
-    PointData data = createData();
-    std::shared_ptr<Compressor> comp_ = std::make_shared<Compressor>();
-    comp_ = std::make_shared<SkipNCompressor>(comp_, skip);
+    epsc::PointData data = createData();
+    std::shared_ptr<epsc::Compressor> comp_ = std::make_shared<epsc::Compressor>();
+    comp_ = std::make_shared<epsc::SkipNCompressor>(comp_, skip);
 
-    PointData compressed_data = comp_->compress(data);
+    epsc::PointData compressed_data = comp_->compress(data);
 
     ASSERT_EQ(calculateNSkipLength(data.size(), skip), compressed_data.size());
     ASSERT_EQ(data[0], compressed_data[0]);
@@ -64,11 +64,11 @@ TEST(CompressorTest, SkipN4CompressorTest) {
 }
 
 TEST(CompressorTest, RadiusCompressorTest) {
-    PointData data = createData();
-    std::shared_ptr<Compressor> comp_ = std::make_shared<Compressor>();
-    comp_ = std::make_shared<RadiusCompressor>(comp_, 1);
+    epsc::PointData data = createData();
+    std::shared_ptr<epsc::Compressor> comp_ = std::make_shared<epsc::Compressor>();
+    comp_ = std::make_shared<epsc::RadiusCompressor>(comp_, 1);
 
-    PointData compressed_data = comp_->compress(data);
+    epsc::PointData compressed_data = comp_->compress(data);
 
     ASSERT_EQ(4, compressed_data.size());
     ASSERT_EQ(data[0], compressed_data[0]);

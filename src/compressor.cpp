@@ -4,6 +4,10 @@
  */
 #include "compressor.h"
 
-PointData Compressor::compress(const PointData &data) { return data; }
+namespace epsc {
 
-Compressor::~Compressor() {}
+    PointData Compressor::compress(const PointData &data) { return data; }
+
+    Compressor::~Compressor() {}
+    
+}
