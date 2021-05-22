@@ -27,7 +27,7 @@ public:
      * 
      * @param data Wektor punktow do kompresji
      */
-    virtual PointData compress(PointData data);
+    virtual PointData compress(const PointData &data);
     virtual ~Compressor();
 };
 

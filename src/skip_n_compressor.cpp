@@ -7,7 +7,7 @@
 SkipNCompressor::SkipNCompressor(std::shared_ptr<Compressor> dec, int skip)
     : BaseCompressorDecorator(dec), skip_n_(skip) {}
 
-PointData SkipNCompressor::compress(PointData data) {
+PointData SkipNCompressor::compress(const PointData &data) {
     PointData comp_data = BaseCompressorDecorator::compress(data);
 
     PointData comp_result;

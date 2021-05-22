@@ -4,6 +4,6 @@
  */
 #include "compressor.h"
 
-PointData Compressor::compress(PointData data) { return data; }
+PointData Compressor::compress(const PointData &data) { return data; }
 
 Compressor::~Compressor() {}

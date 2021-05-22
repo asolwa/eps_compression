@@ -14,7 +14,7 @@ bool RadiusCompressor::closer_than_radius(const Point &a, const Point &b){
     return dist_x * dist_x + dist_y * dist_y < thr_;
 }
 
-PointData RadiusCompressor::compress(PointData data) {
+PointData RadiusCompressor::compress(const PointData &data) {
     PointData comp_data = BaseCompressorDecorator::compress(data);
 
     PointData comp_result;

@@ -41,7 +41,7 @@ public:
      * 
      * @param data Wektor danych do kompresji
      */
-    virtual PointData compress(PointData data);
+    virtual PointData compress(const PointData &data);
 };
 
 #endif /* SKIP_N_COMPRESSOR */
