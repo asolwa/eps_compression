@@ -13,19 +13,23 @@ set(SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.ui
-        ${CMAKE_CURRENT_SOURCE_DIR}/eps_parser.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/eps_lexer.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/eps_objects.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/eps_loader.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/converter.cpp)
+        ${CMAKE_CURRENT_SOURCE_DIR}/eps_parser.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/shape_factory.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/shape.cpp
+)
 
 SET(MODULE_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.h
         ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/eps_parser.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/eps_lexer.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/eps_objects.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/eps_loader.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/converter.cpp)
-
+        ${CMAKE_CURRENT_SOURCE_DIR}/eps_parser.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/shape_factory.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/shape.cpp)
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(${BINARY}_run

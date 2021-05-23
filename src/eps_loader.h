@@ -8,28 +8,31 @@
 #include <unordered_map>
 #include <utility>
 #include "eps_objects.h"
+#include "eps_lexer.h"
 #include "eps_parser.h"
-#include "converter.h"
+#include "shape.h"
+#include "shape_factory.h"
 
 using EpsDataPtr = std::shared_ptr<EpsData>;
 using EpsDatas = std::vector<EpsDataPtr>;
+using ShapePtr = std::shared_ptr<Shape>;
 
 class EpsLoader {
 public:
     void load();
     void write();
-    void setInFile(std::string name);
-    void setOutFile(std::string name);
+    void setInFile(std::string& name);
+    void setOutFile(std::string& name);
     EpsDatas readFromFile(std::ifstream& ifs);
-    void convert();
-    void print();
 
 private:
     std::string in_name_;
     std::string out_name_;
     EpsDatas eps_datas_;
+    EpsLexer lexer_;
     EpsParser parser_;
-    Converter converter_;
+    std::vector<ShapePtr> shapes_;
+    ShapeFactory shapeFactory_;
 };
 
 #endif /* EPS_LOADER */

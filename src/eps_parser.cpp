@@ -1,44 +1,41 @@
+#include <iostream>
 #include <regex>
 #include "eps_parser.h"
-#include "eps_objects.h"
 
-EpsDataPtr EpsParser::create(std::istream& ifs) {
-    std::string line;
-    std::smatch reg_value;
+EpsParser::EpsParser() = default;
 
+EpsDatas EpsParser::parse(std::vector<std::vector<std::string>> &tokenData) {
     std::regex regex_header("^%.+$");
-    std::regex regex_alias("^\\/(\\w+) +\\{ (.+) \\} bind def$");
-    std::regex regex_ins("^([\\d\\.]+) ([\\d\\.]+) ([\\w])$");
-    std::regex regex_basic_ins("^(\\w+)$");
+    std::regex regex_alias_beginning("^\\/\\w+$");
+    std::vector<std::string> currentTokens;
 
-    getline(ifs, line);
-
-    if (regex_match(line, regex_header)) {
-        return std::shared_ptr<EpsData>(new Header(line));
+    for (auto &tokens:tokenData) {
+        currentTokens.insert(currentTokens.end(), tokens.begin(), tokens.end());
+        if (!currentTokens.empty()) {
+            if (regex_match(currentTokens[0], regex_header)) {
+                EpsDataPtr header(new EpsData(EpsDataType::header, currentTokens));
+                eps_datas_.push_back(std::move(header));
+                currentTokens.clear();
+            } else if (regex_match(currentTokens[0], regex_alias_beginning)) {
+                int size = currentTokens.size();
+                if (size >= 5) {
+                    if (currentTokens[1] == "{" && currentTokens[size - 2] == "}" && currentTokens[size - 1] == "def") {
+                        EpsDataPtr alias(new EpsData(EpsDataType::alias, currentTokens));
+                        eps_datas_.push_back(std::move(alias));
+                        currentTokens.clear();
+                    } else if (size >= 6 && currentTokens[1] == "{" && currentTokens[size - 3] == "}" &&
+                               currentTokens[size - 2] == "bind" && currentTokens[size - 1] == "def") {
+                        EpsDataPtr alias(new EpsData(EpsDataType::alias, currentTokens));
+                        eps_datas_.push_back(std::move(alias));
+                        currentTokens.clear();
+                    }
+                }
+            } else {
+                EpsDataPtr instruction(new EpsData(EpsDataType::instruction, currentTokens));
+                eps_datas_.push_back(std::move(instruction));
+                currentTokens.clear();
+            }
+        }
     }
-    
-    else if (regex_search(line, reg_value, regex_alias)) {
-        return std::shared_ptr<Alias>(
-            new Alias(std::make_pair(reg_value[1], reg_value[2]))
-        );
-    }
-    
-    else if (regex_search(line, reg_value, regex_ins)) {
-        std::vector<std::string> v;
-        v.push_back(reg_value[1]);
-        v.push_back(reg_value[2]);
-        v.push_back(reg_value[3]);
-        return std::shared_ptr<EpsData>(
-            new Instruction(v)
-        );
-    }
-    else if (regex_search(line, reg_value, regex_basic_ins)){
-        std::vector<std::string> v;
-        v.push_back(reg_value[1]);
-        return std::shared_ptr<EpsData>(
-                new Instruction(v)
-        );
-    }
-
-    return std::shared_ptr<EpsData>(new Command(line));
+    return eps_datas_;
 }

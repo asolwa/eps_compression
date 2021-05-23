@@ -1,10 +1,12 @@
 #ifndef EPS_PARSER
 #define EPS_PARSER
 
-#include <iostream>
-#include <memory>
+#include <utility>
+#include <map>
+#include <string>
 #include <vector>
-#include <regex>
+#include <stack>
+
 #include "eps_objects.h"
 
 using EpsDataPtr = std::shared_ptr<EpsData>;
@@ -12,7 +14,13 @@ using EpsDatas = std::vector<EpsDataPtr>;
 
 class EpsParser {
 public:
-    EpsDataPtr create(std::istream& ifs);
+    EpsDatas parse(std::vector<std::vector<std::string>> &tokens);
+
+    EpsParser();
+
+private:
+    EpsDatas eps_datas_;
 };
 
-#endif /* EPS_PARSER */
+
+#endif //EPS_PARSER

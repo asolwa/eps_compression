@@ -5,53 +5,21 @@
 #include <vector>
 #include <memory>
 
-
-enum class EpsDataType{header, alias, instruction, command};
+enum class EpsDataType {
+    header, alias, instruction
+};
 
 class EpsData {
 public:
-    virtual std::string str() = 0;
-    virtual ~EpsData() {}
-    EpsDataType getDataType();
-    virtual std::vector<std::string> getValues() = 0;
-protected:
-    EpsDataType dataType;
-};
+    EpsData(EpsDataType dataType, std::vector<std::string> tokenValues);
 
-class Header : public EpsData {
-    std::string data_;
-public:
-    Header(std::string data);
-    ~Header();
-    virtual std::string str();
-    virtual std::vector<std::string> getValues();
-};
+    EpsDataType getDataType() const;
 
-class Instruction : public EpsData {
-    std::vector<std::string> instructions_;
-public:
-    Instruction(std::vector<std::string> instructions);
-    ~Instruction();
-    virtual std::string str();
-    virtual std::vector<std::string> getValues();
-};
+    std::vector<std::string> getTokenValues() const;
 
-class Alias : public EpsData {
-    std::pair<std::string, std::string> map_;
-public:
-    Alias(std::pair<std::string, std::string> map);
-    ~Alias();
-    virtual std::string str();
-    virtual std::vector<std::string> getValues();
-};
-
-class Command : public EpsData {
-    std::string data_;
-public:
-    Command(std::string data);
-    ~Command();
-    virtual std::string str();
-    virtual std::vector<std::string> getValues();
+private:
+    std::vector<std::string> tokenValues_;
+    EpsDataType dataType_;
 };
 
 #endif /* EPS_OBJECTS */

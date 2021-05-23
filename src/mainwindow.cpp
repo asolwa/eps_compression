@@ -3,38 +3,29 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QDir>
-#include <math.h>
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
-    , openedFileName("")
-{
+        : QMainWindow(parent), ui(new Ui::MainWindow), openedFileName("") {
     ui->setupUi(this);
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow() {
     delete ui;
 }
 
-void MainWindow::on_compressButton_clicked()
-{
-    if(openedFileName.empty())
-        QMessageBox::warning(this," ","No file to compress");
+void MainWindow::on_compressButton_clicked() {
+    if (openedFileName.empty())
+        QMessageBox::warning(this, " ", "No file to compress");
     else
-        QMessageBox::about(this," ","File was successfully compressed");
+        QMessageBox::about(this, " ", "File was successfully compressed");
 }
 
-void MainWindow::on_openFileButton_clicked()
-{
+void MainWindow::on_openFileButton_clicked() {
     QString fileName = QFileDialog::getOpenFileName(this, "Choose file to open", QDir::homePath(), ".eps (*.eps)");
     openedFileName = fileName.toStdString();
-    if(!openedFileName.empty()){
+    if (!openedFileName.empty()) {
         fileLoader.setInFile(openedFileName);
         fileLoader.load();
-        fileLoader.convert();
-        fileLoader.print();
-        QMessageBox::information(this," ", fileName);
+        QMessageBox::information(this, " ", fileName);
     }
 }
