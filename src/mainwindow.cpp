@@ -14,6 +14,7 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::on_compressButton_clicked() {
+    fileLoader.write();
     if (openedFileName.empty())
         QMessageBox::warning(this, " ", "No file to compress");
     else

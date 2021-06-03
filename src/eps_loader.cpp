@@ -22,10 +22,7 @@ void EpsLoader::load() {
 }
 
 void EpsLoader::write() {
-    std::ofstream out_file(out_name_);
+    std::ofstream out_file("wynik.eps");
 
-    for (auto &data : eps_datas_)
-        //out_file << data->str() << std::endl;
-
-        out_file.close();
+    out_file.close();
 }
