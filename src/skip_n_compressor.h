@@ -28,6 +28,7 @@ namespace epsc {
         int skip_n_;
     public:
         SkipNCompressor() = delete;
+        ~SkipNCompressor() {};
         /** 
          * Konstruktor kompresora.
          * Przyjmuje kompresor ktory zostanie udekorowany,

@@ -1,4 +1,7 @@
 #include "shape_factory.h"
+#include <iostream>
+#include <iterator>
+#include <sstream>
 
 ShapeFactory::ShapeFactory() : currentFillType_(FillType::none) {}
 
@@ -31,10 +34,23 @@ void ShapeFactory::convertAlias(EpsDataPtr &dataPtr) {
 }
 
 void ShapeFactory::convertHeader(EpsDataPtr &dataPtr) {
+    std::ostringstream joined;
+    auto data = dataPtr->getTokenValues();
+    std::copy(data.begin(), data.end(),
+           std::ostream_iterator<std::string>(joined, " "));
+    header_.push_back(joined.str());
+}
 
+std::vector<std::string> ShapeFactory::getHeader() {
+    return header_;
+}
+
+std::unordered_map<std::string, std::vector<std::string>> ShapeFactory::getAlias() {
+    return declaredAliases_;
 }
 
 void ShapeFactory::convertInstruction(EpsDataPtr &dataPtr) {
+    std::setlocale(LC_NUMERIC,"C");
     std::stack<std::string> instructionStack;
     std::vector<std::string> instructionVector = dataPtr->getTokenValues();
     std::string currentInstruction;
@@ -51,6 +67,7 @@ void ShapeFactory::convertInstruction(EpsDataPtr &dataPtr) {
         if (!replaceAlias(currentInstruction, pendingInstructions_)) {
             if (currentInstruction == "moveto" && instructionStack.size() >= 2) {
                 float y = stof(instructionStack.top());
+                std::cout << stof(instructionStack.top()) << std:: endl;
                 instructionStack.pop();
                 float x = stof(instructionStack.top());
                 instructionStack.pop();

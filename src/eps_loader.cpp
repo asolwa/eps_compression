@@ -1,6 +1,8 @@
 #include <fstream>
 #include <string>
 #include "eps_loader.h"
+#include "compressor.h"
+#include "skip_n_compressor.h"
 
 void EpsLoader::setInFile(std::string &name) { in_name_ = name; };
 
@@ -24,5 +26,37 @@ void EpsLoader::load() {
 void EpsLoader::write() {
     std::ofstream out_file("wynik.eps");
 
+    for(auto header_element : shapeFactory_.getHeader())
+        out_file << header_element << std::endl;
+
+    writeAliases(out_file);
+
+    for(auto shape : shapes_) {
+        if (shape->getFillType() == FillType::none)
+            writeLine(out_file, shape);
+
+    }
+
     out_file.close();
+}
+
+void EpsLoader::writeLine(std::ofstream &out_file, ShapePtr &shape) {
+    std::shared_ptr<epsc::Compressor> comp_ = std::make_shared<epsc::Compressor>();
+    comp_ = std::make_shared<epsc::SkipNCompressor>(comp_);
+    epsc::PointData compressed_data = comp_->compress(shape->getPoints());
+    out_file << "newpath" << std::endl;
+    auto first_el = compressed_data.front();
+    out_file << first_el.first << " " << first_el.second << " x" << std::endl;
+
+    for(auto el = compressed_data.begin() + 1; el != compressed_data.end(); ++el)
+        out_file << el->first << " " << el->second << " y" << std::endl;
+    out_file << "2 setlinewidth\nstroke" << std::endl;
+}
+
+void EpsLoader::writeAliases(std::ofstream &out_file) {
+    out_file << "/x   { moveto } bind def" << std::endl;
+    out_file << "/y   { lineto } bind def" << std::endl;
+    auto aliases = shapeFactory_.getAlias();
+    for(auto& alias : aliases) 
+        out_file << "/" << alias.first << "   { " << alias.second[0] << " } bind def" << std::endl;
 }

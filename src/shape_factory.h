@@ -19,6 +19,8 @@ public:
     ShapeFactory();
 
     std::vector<ShapePtr> create(EpsDatas epsData);
+    std::vector<std::string> getHeader();
+    std::unordered_map<std::string, std::vector<std::string>> getAlias();
 
 private:
     void convertAlias(EpsDataPtr &);
@@ -35,6 +37,7 @@ private:
     std::pair<float, float> currentPoint_;
     FillType currentFillType_;
     std::vector<ShapePtr> shapes_;
+    std::vector<std::string> header_;
 };
 
 
