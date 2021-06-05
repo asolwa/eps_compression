@@ -19,6 +19,7 @@ set(SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/eps_parser.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/shape_factory.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/shape.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/GraphicsState.cpp
 )
 
 SET(MODULE_SOURCES
@@ -29,7 +30,8 @@ SET(MODULE_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/eps_loader.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/eps_parser.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/shape_factory.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/shape.cpp)
+        ${CMAKE_CURRENT_SOURCE_DIR}/shape.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/GraphicsState.cpp)
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(${BINARY}_run

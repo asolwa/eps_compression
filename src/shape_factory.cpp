@@ -1,7 +1,5 @@
 #include "shape_factory.h"
 
-ShapeFactory::ShapeFactory() : currentFillType_(FillType::none) {}
-
 std::vector<ShapePtr> ShapeFactory::create(EpsDatas epsData) {
     for (auto &i:epsData) {
         if (i->getDataType() == EpsDataType::header) {
@@ -20,7 +18,7 @@ void ShapeFactory::convertAlias(EpsDataPtr &dataPtr) {
     std::vector<std::string> values;
     int firstNonValueIndex;
     std::string key = tokens[0];
-    key.erase(key.begin(), key.begin()+1);
+    key.erase(key.begin(), key.begin() + 1);
     if (tokens[tokens.size() - 2] == "bind")
         firstNonValueIndex = 3;
     else
@@ -39,14 +37,14 @@ void ShapeFactory::convertInstruction(EpsDataPtr &dataPtr) {
     std::vector<std::string> instructionVector = dataPtr->getTokenValues();
     std::string currentInstruction;
 
-    size_t i = 0;
-    while (i < instructionVector.size() || !pendingInstructions_.empty()) {
+    size_t s = 0;
+    while (s < instructionVector.size() || !pendingInstructions_.empty()) {
         if (!pendingInstructions_.empty()) {
             currentInstruction = pendingInstructions_.top();
             pendingInstructions_.pop();
         } else {
-            currentInstruction = instructionVector[i];
-            i++;
+            currentInstruction = instructionVector[s];
+            s++;
         }
         if (!replaceAlias(currentInstruction, pendingInstructions_)) {
             if (currentInstruction == "moveto" && instructionStack.size() >= 2) {
@@ -56,7 +54,7 @@ void ShapeFactory::convertInstruction(EpsDataPtr &dataPtr) {
                 instructionStack.pop();
                 currentPoint_.first = x;
                 currentPoint_.second = y;
-                currentLine_.push_back(currentPoint_);
+                graphics_.changeCurrentPoint(currentPoint_);
             } else if (currentInstruction == "rmoveto" && instructionStack.size() >= 2) {
                 float y = stof(instructionStack.top());
                 instructionStack.pop();
@@ -64,6 +62,7 @@ void ShapeFactory::convertInstruction(EpsDataPtr &dataPtr) {
                 instructionStack.pop();
                 currentPoint_.first += x;
                 currentPoint_.second += y;
+                graphics_.changeCurrentPoint(currentPoint_);
             } else if (currentInstruction == "rlineto" && instructionStack.size() >= 2) {
                 float y = stof(instructionStack.top());
                 instructionStack.pop();
@@ -71,7 +70,7 @@ void ShapeFactory::convertInstruction(EpsDataPtr &dataPtr) {
                 instructionStack.pop();
                 currentPoint_.first += x;
                 currentPoint_.second += y;
-                currentLine_.push_back(currentPoint_);
+                graphics_.addToPath(currentPoint_);
             } else if (currentInstruction == "lineto" && instructionStack.size() >= 2) {
                 float y = stof(instructionStack.top());
                 instructionStack.pop();
@@ -79,11 +78,11 @@ void ShapeFactory::convertInstruction(EpsDataPtr &dataPtr) {
                 instructionStack.pop();
                 currentPoint_.first = x;
                 currentPoint_.second = y;
-                currentLine_.push_back(currentPoint_);
+                graphics_.addToPath(currentPoint_);
+            } else if (currentInstruction == "newpath") {
+                graphics_.clearPath();
             } else if (currentInstruction == "closepath") {
-                if (!currentLine_.empty()) {
-                    currentLine_.push_back(currentLine_[0]);
-                }
+                graphics_.closePath();
             } else if (currentInstruction == "mul" && instructionStack.size() >= 2) {
                 float y = stof(instructionStack.top());
                 instructionStack.pop();
@@ -113,13 +112,31 @@ void ShapeFactory::convertInstruction(EpsDataPtr &dataPtr) {
                         instructionStack.push(v[(n - j + i) % n]);
                     }
                 }
+            } else if (currentInstruction == "copy") {
+                int n = stoi(instructionStack.top());
+                instructionStack.pop();
+                std::string copiedElement = instructionStack.top();
+                for (int i = 0; i < n; i++)
+                    instructionStack.push(copiedElement);
+            } else if (currentInstruction == "showpage") {
+
+            } else if (currentInstruction == "grestore") {
+                graphics_ = graphicsStack_.top();
+                graphicsStack_.pop();
+            } else if (currentInstruction == "gsave") {
+                graphicsStack_.push(graphics_);
             } else if (currentInstruction == "fill") {
-                currentFillType_ = FillType::fill;
+                for (auto& subPath:graphics_.getPath()) {
+                    ShapePtr shape(new Shape(subPath, FillType::fill));
+                    shapes_.push_back(shape);
+                }
+                graphics_.clearPath();
             } else if (currentInstruction == "stroke") {
-                ShapePtr shape(new Shape(currentLine_, currentFillType_));
-                shapes_.push_back(shape);
-                currentLine_.clear();
-                currentFillType_ = FillType::none;
+                for (auto& subPath:graphics_.getPath()) {
+                    ShapePtr shape(new Shape(subPath, FillType::none));
+                    shapes_.push_back(shape);
+                }
+                graphics_.clearPath();
             } else
                 instructionStack.push(currentInstruction);
         }
