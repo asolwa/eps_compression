@@ -5,7 +5,7 @@
 EpsParser::EpsParser() = default;
 
 EpsDatas EpsParser::parse(std::vector<std::vector<std::string>> &tokenData) {
-    std::regex regex_header("^%.+$");
+    std::regex regex_header("^%.*$");
     std::regex regex_alias_beginning("^\\/\\w+$");
     std::vector<std::string> currentTokens;
 

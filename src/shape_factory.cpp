@@ -1,4 +1,5 @@
 #include "shape_factory.h"
+#include <iostream>
 
 std::vector<ShapePtr> ShapeFactory::create(EpsDatas epsData) {
     for (auto &i:epsData) {
@@ -105,7 +106,7 @@ void ShapeFactory::convertInstruction(EpsDataPtr &dataPtr) {
                 if (n != 0 && j != 0 && instructionStack.size() >= n) {
                     std::vector<std::string> v(n);
                     for (int i = 0; i < n; i++) {
-                        v[i] = instructionStack.top();
+                        v[n - 1 - i] = instructionStack.top();
                         instructionStack.pop();
                     }
                     for (int i = 0; i < n; i++) {
@@ -126,13 +127,13 @@ void ShapeFactory::convertInstruction(EpsDataPtr &dataPtr) {
             } else if (currentInstruction == "gsave") {
                 graphicsStack_.push(graphics_);
             } else if (currentInstruction == "fill") {
-                for (auto& subPath:graphics_.getPath()) {
+                for (auto &subPath:graphics_.getPath()) {
                     ShapePtr shape(new Shape(subPath, FillType::fill));
                     shapes_.push_back(shape);
                 }
                 graphics_.clearPath();
             } else if (currentInstruction == "stroke") {
-                for (auto& subPath:graphics_.getPath()) {
+                for (auto &subPath:graphics_.getPath()) {
                     ShapePtr shape(new Shape(subPath, FillType::none));
                     shapes_.push_back(shape);
                 }
