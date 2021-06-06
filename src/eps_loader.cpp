@@ -4,6 +4,7 @@
 #include "eps_loader.h"
 #include "compressor.h"
 #include "skip_n_compressor.h"
+#include "radius_compressor.h"
 
 void EpsLoader::setInFile(std::string &name) { in_name_ = name; };
 
@@ -66,6 +67,7 @@ void EpsLoader::write() {
 
     Points data = convertPoints(shapes_);
     std::shared_ptr<epsc::Compressor> comp_ = std::make_shared<epsc::Compressor>();
+    comp_ = std::make_shared<epsc::RadiusCompressor>(comp_, 1);
     epsc::PointData compressed_data = comp_->compress(data);
     out_file << "bp" << std::endl;
     for(auto el = compressed_data.begin(); el != compressed_data.end(); ++el)
