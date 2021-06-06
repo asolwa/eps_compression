@@ -1,5 +1,7 @@
 #include "shape_factory.h"
 #include <iostream>
+#include <sstream>
+#include <iterator>
 
 std::vector<ShapePtr> ShapeFactory::create(EpsDatas epsData) {
     for (auto &i:epsData) {
@@ -30,7 +32,19 @@ void ShapeFactory::convertAlias(EpsDataPtr &dataPtr) {
 }
 
 void ShapeFactory::convertHeader(EpsDataPtr &dataPtr) {
+    std::ostringstream joined;
+    auto data = dataPtr->getTokenValues();
+    std::copy(data.begin(), data.end(),
+           std::ostream_iterator<std::string>(joined, " "));
+    header_.push_back(joined.str());
+}
 
+std::vector<std::string> ShapeFactory::getHeader() {
+    return header_;
+}
+
+std::unordered_map<std::string, std::vector<std::string>> ShapeFactory::getAlias() {
+    return declaredAliases_;
 }
 
 void ShapeFactory::convertInstruction(EpsDataPtr &dataPtr) {

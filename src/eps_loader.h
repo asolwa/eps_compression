@@ -26,6 +26,9 @@ public:
     EpsDatas readFromFile(std::ifstream& ifs);
 
 private:
+    void writeLine(std::ofstream &out_file, ShapePtr &shape);
+    void writeAliases(std::ofstream &out_file);
+
     std::string in_name_;
     std::string out_name_;
     EpsDatas eps_datas_;
