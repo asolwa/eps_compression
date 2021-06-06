@@ -93,3 +93,25 @@ TEST(ShapeFactoryTest, SimplePointTest) {
     ASSERT_EQ(FillType::fill, shapePtrs[0]->getFillType());
     ASSERT_EQ(line.getPoints(), shapePtrs[0]->getPoints());
 }
+
+TEST(ShapeFactoryTest, PointTest) {
+    Shape line{{std::make_pair(295.16, 298.01), std::make_pair(295.16, 299.01), std::make_pair(296.16, 299.01),
+                std::make_pair(296.16, 298.01), std::make_pair(295.16, 298.01)}, FillType::fill};
+    ShapeFactory factory;
+    size_t expectedSize = 2;
+
+    EpsDataPtr aliasR(new EpsData(EpsDataType::alias,
+                                  {"/r", "{", "4", "2", "roll", "moveto", "1", "copy", "3", "-1", "roll", "exch", "0",
+                                   "exch", "rlineto", "0", "rlineto", "-1", "mul", "0", "exch", "rlineto", "closepath",
+                                   "}", "bind", "def"}));
+    EpsDataPtr aliasP(
+            new EpsData(EpsDataType::alias, {"/p", "{", "gsave", "fill", "grestore", "stroke", "newpath", "}", "bind", "def"}));
+    EpsDataPtr insPoint(new EpsData(EpsDataType::instruction, {"295.16", "298.01", "1.00", "1.00", "r", "p"}));
+    EpsDatas data{aliasR, aliasP, insPoint};
+    std::vector<ShapePtr> shapePtrs = factory.create(data);
+    ASSERT_EQ(expectedSize, shapePtrs.size());
+    ASSERT_EQ(FillType::fill, shapePtrs[0]->getFillType());
+    ASSERT_EQ(line.getPoints(), shapePtrs[0]->getPoints());
+    ASSERT_EQ(FillType::none, shapePtrs[1]->getFillType());
+    ASSERT_EQ(line.getPoints(), shapePtrs[1]->getPoints());
+}

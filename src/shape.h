@@ -4,7 +4,7 @@
 #include <vector>
 
 enum class FillType{
-    none, fill
+    none, fill, eofill
 };
 
 class Shape {

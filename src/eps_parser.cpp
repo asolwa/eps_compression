@@ -16,7 +16,7 @@ EpsDatas EpsParser::parse(std::vector<std::vector<std::string>> &tokenData) {
                 EpsDataPtr header(new EpsData(EpsDataType::header, currentTokens));
                 eps_datas_.push_back(std::move(header));
                 currentTokens.clear();
-            } else if (regex_match(currentTokens[0], regex_alias_beginning)) {
+            } else if (regex_match(currentTokens[0], regex_alias_beginning) && (tokens.size() == 1 || currentTokens[1] == "{")) {
                 int size = currentTokens.size();
                 if (size >= 5) {
                     if (currentTokens[1] == "{" && currentTokens[size - 2] == "}" && currentTokens[size - 1] == "def") {

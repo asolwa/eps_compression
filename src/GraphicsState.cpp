@@ -1,4 +1,10 @@
-#include "GraphicsState.h"
+/**
+ * \file GraphicsState.cpp
+ * \brief Klasa reprezentujaca stan graficzny
+ */
+ #include "GraphicsState.h"
+
+#include <utility>
 
 GraphicsState::GraphicsState() : lastMoveTo_(false), lineWidth_(0) {}
 
@@ -6,8 +12,8 @@ std::vector<std::vector<std::pair<float, float>>> GraphicsState::getPath() {
     return subPaths_;
 }
 
-void GraphicsState::setColor(std::string &color) {
-    color_ = color;
+void GraphicsState::setColor(std::vector<float> color) {
+    color_ = std::move(color);
 }
 
 void GraphicsState::setFont(std::string &font) {
@@ -24,7 +30,7 @@ void GraphicsState::closePath() {
             subPaths_.back().push_back(subPaths_.back().front());
 }
 
-void GraphicsState::addToPath(std::pair<float, float> &point) {
+void GraphicsState::addToPath(std::pair<float, float>& point) {
     if (lastMoveTo_) {
         subPaths_.push_back(std::vector<std::pair<float, float>>{currentPoint_, point});
         currentPoint_ = point;
@@ -33,7 +39,7 @@ void GraphicsState::addToPath(std::pair<float, float> &point) {
     lastMoveTo_ = false;
 }
 
-void GraphicsState::changeCurrentPoint(std::pair<float, float> &point) {
+void GraphicsState::setCurrentPoint(std::pair<float, float> &point) {
     currentPoint_ = point;
     lastMoveTo_ = true;
 }

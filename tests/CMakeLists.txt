@@ -6,6 +6,7 @@ set(SOURCE_FILES
         src/eps_parser_test.cpp
         src/shape_factory_test.cpp
         src/compressor_test.cpp
+        src/GraphicsStateTest.cpp
 )
 set(CMAKE_AUTOMOC ON)
 
