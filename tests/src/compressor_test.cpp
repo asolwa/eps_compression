@@ -66,13 +66,11 @@ TEST(CompressorTest, SkipN4CompressorTest) {
 TEST(CompressorTest, RadiusCompressorTest) {
     epsc::PointData data = createData();
     std::shared_ptr<epsc::Compressor> comp_ = std::make_shared<epsc::Compressor>();
-    comp_ = std::make_shared<epsc::RadiusCompressor>(comp_, 1);
+    comp_ = std::make_shared<epsc::RadiusCompressor>(comp_, 2);
 
     epsc::PointData compressed_data = comp_->compress(data);
 
-    ASSERT_EQ(4, compressed_data.size());
+    ASSERT_EQ(2, compressed_data.size());
     ASSERT_EQ(data[0], compressed_data[0]);
-    ASSERT_EQ(data[2], compressed_data[1]);
-    ASSERT_EQ(data[3], compressed_data[2]);
-    ASSERT_EQ(data[6], compressed_data[3]);
+    ASSERT_EQ(data[3], compressed_data[1]);
 }
