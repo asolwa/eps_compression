@@ -7,7 +7,7 @@ set(SOURCE_FILES
         src/shape_factory_test.cpp
         src/compressor_test.cpp
         src/GraphicsStateTest.cpp
-)
+        src/ShapeTest.cpp)
 set(CMAKE_AUTOMOC ON)
 
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)

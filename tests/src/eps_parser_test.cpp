@@ -13,3 +13,22 @@ TEST(EPSParserTest, ParseAliasTest) {
     std::vector<std::vector<std::string>> tokenValues{{"/m", "{", "moveto", "}", "bind", "def"}};
     ASSERT_EQ(EpsDataType::alias, parser.parse(tokenValues)[0]->getDataType());
 }
+
+TEST(EPSParserTest, MultiLineAliasTest) {
+    EpsParser parser;
+    size_t expectedSize = 1;
+    std::vector<std::string> tokens{"/m", "{", "moveto", "}", "bind", "def"};
+    std::vector<std::vector<std::string>> tokenValues{{"/m", "{"}, {"moveto"}, {"}", "bind", "def"}};
+    EpsDatas datas = parser.parse(tokenValues);
+    ASSERT_EQ(expectedSize, datas.size());
+    ASSERT_EQ(EpsDataType::alias, datas[0]->getDataType());
+    ASSERT_EQ(tokens, datas[0]->getTokenValues());
+}
+
+TEST(EPSParserTest, EmptyTokensTest) {
+    EpsParser parser;
+    size_t expectedSize = 0;
+    std::vector<std::vector<std::string>> tokenValues{{}};
+    EpsDatas datas = parser.parse(tokenValues);
+    ASSERT_EQ(expectedSize, datas.size());
+}
