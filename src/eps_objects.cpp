@@ -1,5 +1,11 @@
+/**
+ * \file EpsObjects.cpp
+ * \brief Klasa reprezentująca alias, header lub instrukcję.
+ */
+
 #include <sstream>
 #include <utility>
+
 #include "eps_objects.h"
 
 EpsData::EpsData(EpsDataType dataType, std::vector<std::string> tokenValues) : tokenValues_(std::move(tokenValues)),

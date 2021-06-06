@@ -1,3 +1,13 @@
+/**
+     * @file EpsLexer.h
+     * @class EpsLexer
+     * @brief Klasa będąca reprezentacją leksera
+     * @details Klasa, której zadaniem jest podzielenielenie
+                danych otrzymanych ze strumienia na tokeny.
+     *
+     * @author Piotr Lewandowski
+ */
+
 #ifndef EPS_LEXER
 #define EPS_LEXER
 
@@ -5,7 +15,9 @@
 #include <memory>
 #include <vector>
 #include <regex>
+
 #include "eps_objects.h"
+
 
 using EpsDataPtr = std::shared_ptr<EpsData>;
 using EpsDatas = std::vector<EpsDataPtr>;

@@ -1,3 +1,12 @@
+/**
+     * @file EpsObjects.h
+     * @class EpsData
+     * @brief Klasa reprezentująca alias, header lub instrukcję
+     * @details Klasa, która zawiera zbiór tokenów oraz typ (instrukcja, alias, lub header)
+     *
+     * @author Piotr Lewandowski
+ */
+
 #ifndef EPS_OBJECTS
 #define EPS_OBJECTS
 

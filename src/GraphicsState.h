@@ -7,8 +7,8 @@
 /**
      * @file GraphicsState.h
      * @class GraphicsState
-     * @brief Klasa reprezentujaca stan graficzny
-     * @details Klasa reprezentujaca stan graficzny
+     * @brief Klasa reprezentująca stan graficzny
+     * @details Klasa reprezentująca stan graficzny, przechowuje aktualną ścieżkę oraz inne dane o grafice.
      *
      * @author Piotr Lewandowski
  */

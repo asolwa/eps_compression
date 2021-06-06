@@ -1,3 +1,12 @@
+/**
+     * @file ShapeFactory.h
+     * @class ShapeFactory
+     * @brief Klasa tworząca obiekty Shape
+     * @details Klasa, która przetwarza otrzymane aliasy oraz instrukcje i tworzy obiekty typu Shape.
+     *
+     * @author Piotr Lewandowski
+ */
+
 #ifndef EPS_SHAPE_FACTORY_H
 #define EPS_SHAPE_FACTORY_H
 

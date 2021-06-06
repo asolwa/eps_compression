@@ -1,3 +1,13 @@
+/**
+     * @file EpsParser.h
+     * @class EpsParser
+     * @brief Klasa będąca reprezentacją parsera
+     * @details Klasa, której zadaniem jest podzielenielenie
+                otrzymanych tokenów na instrukcje, aliasy i headery.
+     *
+     * @author Piotr Lewandowski
+ */
+
 #ifndef EPS_PARSER
 #define EPS_PARSER
 

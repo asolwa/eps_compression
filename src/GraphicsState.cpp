@@ -1,8 +1,9 @@
 /**
  * \file GraphicsState.cpp
- * \brief Klasa reprezentujaca stan graficzny
+ * \brief Klasa reprezentująca stan graficzny
  */
- #include "GraphicsState.h"
+
+#include "GraphicsState.h"
 
 #include <utility>
 

@@ -1,3 +1,8 @@
+/**
+ * \file ShapeFactory.cpp
+ * \brief Klasa tworząca obiekty Shape
+ */
+
 #include "shape_factory.h"
 
 std::vector<ShapePtr> ShapeFactory::create(EpsDatas epsData) {

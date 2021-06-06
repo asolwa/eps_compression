@@ -1,3 +1,8 @@
+/**
+ * \file EpsParser.cpp
+ * \brief Klasa będąca reprezentacją parsera
+ */
+
 #include <iostream>
 #include <regex>
 #include "eps_parser.h"
