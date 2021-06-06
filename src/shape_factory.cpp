@@ -48,6 +48,7 @@ std::unordered_map<std::string, std::vector<std::string>> ShapeFactory::getAlias
 }
 
 void ShapeFactory::convertInstruction(EpsDataPtr &dataPtr) {
+    std::setlocale(LC_NUMERIC,"C");
     std::stack<std::string> instructionStack;
     std::vector<std::string> instructionVector = dataPtr->getTokenValues();
     std::string currentInstruction;

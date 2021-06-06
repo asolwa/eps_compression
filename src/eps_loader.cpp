@@ -1,5 +1,6 @@
 #include <fstream>
 #include <string>
+#include <algorithm>
 #include "eps_loader.h"
 #include "compressor.h"
 #include "skip_n_compressor.h"
@@ -16,6 +17,35 @@ EpsDatas EpsLoader::readFromFile(std::ifstream &ifs) {
     return parser_.parse(tokens);
 }
 
+using Point = std::pair<float, float>;
+using Points = std::vector<Point>;
+Points convertPoints(std::vector<ShapePtr> &shapes_) {
+
+    Points result;
+    for(auto shape : shapes_) {
+        float x=0;
+        float y=0;
+        float rx=0;
+        float ry=0;
+        Points points_ = shape->getPoints();
+        std::for_each(points_.begin(), points_.end()-1, [&x, &y](const Point &el) {
+            x += el.first;
+            y += el.second;
+        });
+
+        x /= (points_.size() - 1);
+        y /= (points_.size() - 1);
+
+        std::for_each(points_.begin(), points_.end()-1, [&x, &y, &rx, &ry](const Point &el) {
+            rx += (el.first - x) * (el.first - x);
+            ry += (el.second - y) * (el.second - y);
+        });
+
+        result.push_back({points_[0].first, points_[0].second});
+    }
+    return result;
+}
+
 void EpsLoader::load() {
     std::ifstream in_file(in_name_);
     eps_datas_ = readFromFile(in_file);
@@ -24,18 +54,28 @@ void EpsLoader::load() {
 }
 
 void EpsLoader::write() {
-    std::ofstream out_file("wynik.eps");
+    std::ofstream out_file("wynik1.eps");
 
-    for(auto header_element : shapeFactory_.getHeader())
+    for(auto header_element : shapeFactory_.getHeader()) {
         out_file << header_element << std::endl;
+        if(header_element == "%%BeginProlog ")
+            break;
+    }
 
     writeAliases(out_file);
 
-    for(auto shape : shapes_) {
-        if (shape->getFillType() == FillType::none)
-            writeLine(out_file, shape);
+    Points data = convertPoints(shapes_);
+    std::shared_ptr<epsc::Compressor> comp_ = std::make_shared<epsc::Compressor>();
+    epsc::PointData compressed_data = comp_->compress(data);
+    out_file << "bp" << std::endl;
+    for(auto el = compressed_data.begin(); el != compressed_data.end(); ++el)
+        out_file << el->first << " " << el->second << " 1.00 1.00 r p2" << std::endl;
+    out_file << "ep" << std::endl;
+    // for(auto shape : shapes_) {
+    //     if (shape->getFillType() == FillType::none)
+    //         writeLine(out_file, shape);
 
-    }
+    // }
 
     out_file.close();
 }
@@ -57,6 +97,11 @@ void EpsLoader::writeAliases(std::ofstream &out_file) {
     out_file << "/x   { moveto } bind def" << std::endl;
     out_file << "/y   { lineto } bind def" << std::endl;
     auto aliases = shapeFactory_.getAlias();
-    for(auto& alias : aliases) 
-        out_file << "/" << alias.first << "   { " << alias.second[0] << " } bind def" << std::endl;
+    for(auto& alias : aliases) {
+        out_file << "/" << alias.first << "   { ";
+        for(auto &el : alias.second) {
+            out_file << el << " ";
+        }
+        out_file << " } bind def" << std::endl;
+    }
 }
