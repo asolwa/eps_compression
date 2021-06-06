@@ -1,5 +1,4 @@
 #include "shape_factory.h"
-#include <iostream>
 
 std::vector<ShapePtr> ShapeFactory::create(EpsDatas epsData) {
     for (auto &i:epsData) {
@@ -48,55 +47,77 @@ void ShapeFactory::convertInstruction(EpsDataPtr &dataPtr) {
             s++;
         }
         if (!replaceAlias(currentInstruction, pendingInstructions_)) {
-            if (currentInstruction == "moveto" && instructionStack.size() >= 2) {
-                float y = stof(instructionStack.top());
-                instructionStack.pop();
-                float x = stof(instructionStack.top());
-                instructionStack.pop();
-                currentPoint_.first = x;
-                currentPoint_.second = y;
-                graphics_.changeCurrentPoint(currentPoint_);
-            } else if (currentInstruction == "rmoveto" && instructionStack.size() >= 2) {
-                float y = stof(instructionStack.top());
-                instructionStack.pop();
-                float x = stof(instructionStack.top());
-                instructionStack.pop();
-                currentPoint_.first += x;
-                currentPoint_.second += y;
-                graphics_.changeCurrentPoint(currentPoint_);
-            } else if (currentInstruction == "rlineto" && instructionStack.size() >= 2) {
-                float y = stof(instructionStack.top());
-                instructionStack.pop();
-                float x = stof(instructionStack.top());
-                instructionStack.pop();
-                currentPoint_.first += x;
-                currentPoint_.second += y;
-                graphics_.addToPath(currentPoint_);
-            } else if (currentInstruction == "lineto" && instructionStack.size() >= 2) {
-                float y = stof(instructionStack.top());
-                instructionStack.pop();
-                float x = stof(instructionStack.top());
-                instructionStack.pop();
-                currentPoint_.first = x;
-                currentPoint_.second = y;
-                graphics_.addToPath(currentPoint_);
+            if (currentInstruction == "moveto") {
+                if (instructionStack.size() >= 2) {
+                    float y = stof(instructionStack.top());
+                    instructionStack.pop();
+                    float x = stof(instructionStack.top());
+                    instructionStack.pop();
+                    currentPoint_.first = x;
+                    currentPoint_.second = y;
+                    graphics_.setCurrentPoint(currentPoint_);
+                }
+            } else if (currentInstruction == "rmoveto") {
+                if (instructionStack.size() >= 2) {
+                    float y = stof(instructionStack.top());
+                    instructionStack.pop();
+                    float x = stof(instructionStack.top());
+                    instructionStack.pop();
+                    currentPoint_.first += x;
+                    currentPoint_.second += y;
+                    graphics_.setCurrentPoint(currentPoint_);
+                }
+            } else if (currentInstruction == "rlineto") {
+                if (instructionStack.size() >= 2) {
+                    float y = stof(instructionStack.top());
+                    instructionStack.pop();
+                    float x = stof(instructionStack.top());
+                    instructionStack.pop();
+                    currentPoint_.first += x;
+                    currentPoint_.second += y;
+                    graphics_.addToPath(currentPoint_);
+                }
+            } else if (currentInstruction == "lineto") {
+                if (instructionStack.size() >= 2) {
+                    float y = stof(instructionStack.top());
+                    instructionStack.pop();
+                    float x = stof(instructionStack.top());
+                    instructionStack.pop();
+                    currentPoint_.first = x;
+                    currentPoint_.second = y;
+                    graphics_.addToPath(currentPoint_);
+                }
+            } else if (currentInstruction == "setcolor") {
+                if (instructionStack.size() >= 3) {
+                    float x = stof(instructionStack.top());
+                    instructionStack.pop();
+                    float y = stof(instructionStack.top());
+                    instructionStack.pop();
+                    float z = stof(instructionStack.top());
+                    instructionStack.pop();
+                    graphics_.setColor(std::vector<float>{x, y, z});
+                }
             } else if (currentInstruction == "newpath") {
                 graphics_.clearPath();
             } else if (currentInstruction == "closepath") {
                 graphics_.closePath();
-            } else if (currentInstruction == "mul" && instructionStack.size() >= 2) {
-                float y = stof(instructionStack.top());
-                instructionStack.pop();
-                float x = stof(instructionStack.top());
-                instructionStack.pop();
-                instructionStack.push(std::to_string(x * y));
-            } else if (currentInstruction == "exch" && instructionStack.size() >= 2) {
-                std::string x = instructionStack.top();
-                instructionStack.pop();
-                std::string y = instructionStack.top();
-                instructionStack.pop();
-                instructionStack.push(x);
-                instructionStack.push(y);
+            } else if (currentInstruction == "mul") {
+                if (instructionStack.size() >= 2) {
+                    float y = stof(instructionStack.top());
+                    instructionStack.pop();
+                    float x = stof(instructionStack.top());
+                    instructionStack.pop();
+                    instructionStack.push(std::to_string(x * y));
+                }
+            } else if (currentInstruction == "exch") {
+                if (instructionStack.size() >= 2) {
+                    std::string x = instructionStack.top();
+                    instructionStack.pop();
+                    std::string y = instructionStack.top();
+                    instructionStack.pop();
+                    instructionStack.push(x);
+                    instructionStack.push(y);
+                }
             } else if (currentInstruction == "roll") {
                 int j = stoi(instructionStack.top());
                 instructionStack.pop();
@@ -114,21 +135,31 @@ void ShapeFactory::convertInstruction(EpsDataPtr &dataPtr) {
                     }
                 }
             } else if (currentInstruction == "copy") {
-                int n = stoi(instructionStack.top());
-                instructionStack.pop();
-                std::string copiedElement = instructionStack.top();
-                for (int i = 0; i < n; i++)
-                    instructionStack.push(copiedElement);
+                if (instructionStack.size() >= 2) {
+                    int n = stoi(instructionStack.top());
+                    instructionStack.pop();
+                    std::string copiedElement = instructionStack.top();
+                    for (int i = 0; i < n; i++)
+                        instructionStack.push(copiedElement);
+                }
             } else if (currentInstruction == "showpage") {
 
             } else if (currentInstruction == "grestore") {
-                graphics_ = graphicsStack_.top();
-                graphicsStack_.pop();
+                if (!graphicsStack_.empty()) {
+                    graphics_ = graphicsStack_.top();
+                    graphicsStack_.pop();
+                }
             } else if (currentInstruction == "gsave") {
                 graphicsStack_.push(graphics_);
             } else if (currentInstruction == "fill") {
                 for (auto &subPath:graphics_.getPath()) {
                     ShapePtr shape(new Shape(subPath, FillType::fill));
+                    shapes_.push_back(shape);
+                }
+                graphics_.clearPath();
+            } else if (currentInstruction == "eofill") {
+                for (auto &subPath:graphics_.getPath()) {
+                    ShapePtr shape(new Shape(subPath, FillType::eofill));
                     shapes_.push_back(shape);
                 }
                 graphics_.clearPath();
