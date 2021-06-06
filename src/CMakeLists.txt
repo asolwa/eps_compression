@@ -20,6 +20,10 @@ set(SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/shape_factory.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/shape.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/GraphicsState.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/compressor_decorator.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/compressor.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/skip_n_compressor.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/radius_compressor.cpp
 )
 
 SET(MODULE_SOURCES
@@ -31,7 +35,12 @@ SET(MODULE_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/eps_parser.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/shape_factory.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/shape.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/GraphicsState.cpp)
+        ${CMAKE_CURRENT_SOURCE_DIR}/GraphicsState.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/compressor_decorator.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/compressor.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/skip_n_compressor.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/radius_compressor.cpp
+)
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(${BINARY}_run
