@@ -25,12 +25,10 @@ void EpsLoader::load() {
 }
 
 void EpsLoader::write() {
-    std::ofstream out_file("wynik1.eps");
+    std::ofstream out_file(out_name_);
 
     for(auto header_element : shapeFactory_.getHeader()) {
         out_file << header_element << std::endl;
-        if(header_element == "%%BeginProlog ")
-            break;
     }
 
     writeAliases(out_file);

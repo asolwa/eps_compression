@@ -43,7 +43,8 @@ void ShapeFactory::convertHeader(EpsDataPtr &dataPtr) {
     auto data = dataPtr->getTokenValues();
     std::copy(data.begin(), data.end(),
               std::ostream_iterator<std::string>(joined, " "));
-    header_.push_back(joined.str());
+    if (joined.str() != "%%EOF ")
+        header_.push_back(joined.str());
 }
 
 std::vector<std::string> ShapeFactory::getHeader() {

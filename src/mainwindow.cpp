@@ -24,6 +24,8 @@ void MainWindow::on_compressButton_clicked() {
     if (openedFileName.empty())
         QMessageBox::warning(this, " ", "No file to compress");
     else {
+        std::string out_name("result.eps");
+        fileLoader.setOutFile(out_name);
         fileLoader.write();
         QMessageBox::about(this, " ", "File was successfully compressed");
     }
