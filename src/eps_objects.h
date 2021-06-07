@@ -24,7 +24,10 @@ enum class EpsDataType {
 
 class EpsData {
 public:
+
     EpsData(EpsDataType dataType, std::vector<std::string> tokenValues);
+    EpsData & operator=(const EpsData&) = delete;
+    EpsData(const EpsData &data) = delete;
 
     EpsDataType getDataType() const;
 

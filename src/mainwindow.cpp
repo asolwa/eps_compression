@@ -35,6 +35,6 @@ void MainWindow::on_openFileButton_clicked() {
     if (!openedFileName.empty()) {
         fileLoader.setInFile(openedFileName);
         fileLoader.load();
-        QMessageBox::information(this, " ", fileName);
+        QMessageBox::about(this, " ", "File was successfully loaded");
     }
 }

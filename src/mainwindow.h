@@ -21,17 +21,24 @@ QT_END_NAMESPACE
      * @author Piotr Lewandowski
  */
 
-class MainWindow : public QMainWindow
-{
-    Q_OBJECT
+class MainWindow : public QMainWindow {
+Q_OBJECT
 
 public:
     MainWindow(QWidget *parent = nullptr);
+
     ~MainWindow();
 
 private slots:
+
+    /**
+     * Metoda, która określa działanie programu po wciśnięciu przycisku compress.
+    */
     void on_compressButton_clicked();
 
+    /**
+     * Metoda, która określa działanie programu po wciśnięciu przycisku compress.
+    */
     void on_openFileButton_clicked();
 
 private:
@@ -39,4 +46,5 @@ private:
     std::string openedFileName;
     EpsLoader fileLoader;
 };
+
 #endif // MAINWINDOW_H

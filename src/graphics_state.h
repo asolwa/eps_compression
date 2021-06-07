@@ -27,17 +27,27 @@ public:
 
     void setFont(std::string &font);
 
+    /**
+     * Metoda, która usuwa wszystkie punkty z obecnej ścieżki.
+    */
     void clearPath();
 
+    /**
+     * Metoda, która dodaje do obecnej ścieżki punkt będcay poczatkiem tej ścieżki.
+    */
     void closePath();
 
+    /**
+     * Metoda, która dodaje punkt do obecnej ścieżki.
+     * @param point współrzędne punktu.
+    */
     void addToPath(std::pair<float, float> &point);
 
     void setCurrentPoint(std::pair<float, float> &point);
 
     void setLineWidth(double lineWidth);
 
-    double getLineWidth();
+    double getLineWidth() const;
 
 private:
     std::vector<std::vector<std::pair<float, float>>> subPaths_;
