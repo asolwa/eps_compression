@@ -3,12 +3,11 @@
      * @brief Plik zawierajacy klasę ShapeFactory
      * @author Piotr Lewandowski
  */
-
-#include "shape_factory.h"
-
 #include <iostream>
 #include <sstream>
 #include <iterator>
+
+#include "shape_factory.h"
 
 std::vector<ShapePtr> ShapeFactory::create(EpsDatas epsData) {
     shapes_.clear();
