@@ -1,9 +1,15 @@
+/**
+     * @file eps_loader.h
+     * @brief Plik nagłówkowy dla klasy EpsLoader
+     * @author Adam Solawa
+ */
+
 #ifndef EPS_LOADER
 #define EPS_LOADER
 
 #include <string>
 #include <vector>
-#include <sstream> 
+#include <sstream>
 #include <memory>
 #include <unordered_map>
 #include <utility>
@@ -17,17 +23,31 @@ using EpsDataPtr = std::shared_ptr<EpsData>;
 using EpsDatas = std::vector<EpsDataPtr>;
 using ShapePtr = std::shared_ptr<Shape>;
 
+/**
+     * @class EpsLoader
+     * @brief Klasa odpowiedzialna za obsługę plików
+     * @details Klasa, która umożliwia wczytywanie danych wejściowych z pliku
+     *          oraz zapis danych wejściowych do pliku
+     * @author Adam Solawa
+ */
+
 class EpsLoader {
 public:
     void load();
+
     void write();
-    void setInFile(std::string& name);
-    void setOutFile(std::string& name);
-    EpsDatas readFromFile(std::ifstream& ifs);
+
+    void setInFile(std::string &name);
+
+    void setOutFile(std::string &name);
+
+    EpsDatas readFromFile(std::ifstream &ifs);
 
 private:
     void writeLine(std::ofstream &out_file, ShapePtr &shape);
+
     void writePoints(std::ofstream &out_file);
+
     void writeAliases(std::ofstream &out_file);
 
     std::string in_name_;

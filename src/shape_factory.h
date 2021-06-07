@@ -1,9 +1,6 @@
 /**
-     * @file ShapeFactory.h
-     * @class ShapeFactory
-     * @brief Klasa tworząca obiekty Shape
-     * @details Klasa, która przetwarza otrzymane aliasy oraz instrukcje i tworzy obiekty typu Shape.
-     *
+     * @file shape_factory.h
+     * @brief Plik nagłówkowy dla klasy ShapeFactory
      * @author Piotr Lewandowski
  */
 
@@ -18,11 +15,18 @@
 
 #include "eps_objects.h"
 #include "shape.h"
-#include "GraphicsState.h"
+#include "graphics_state.h"
 
 using EpsDataPtr = std::shared_ptr<EpsData>;
 using EpsDatas = std::vector<EpsDataPtr>;
 using ShapePtr = std::shared_ptr<Shape>;
+
+/**
+     * @class ShapeFactory
+     * @brief Klasa tworząca obiekty Shape
+     * @details Klasa, która przetwarza otrzymane aliasy oraz instrukcje i tworzy obiekty typu Shape.
+     * @author Piotr Lewandowski
+ */
 
 class ShapeFactory {
 
@@ -45,7 +49,6 @@ private:
     std::stack<std::string> pendingInstructions_;
     std::vector<std::string> header_;
     std::unordered_map<std::string, std::vector<std::string>> declaredAliases_;
-    std::vector<std::pair<float, float>> currentPath_;
     std::pair<float, float> currentPoint_;
     std::vector<ShapePtr> shapes_;
     GraphicsState graphics_;

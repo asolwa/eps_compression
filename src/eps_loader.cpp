@@ -1,3 +1,9 @@
+/**
+     * @file eps_loader.cpp
+     * @brief Plik zawierajacy klasę EpsLoader
+     * @author Adam Solawa
+ */
+
 #include <fstream>
 #include <string>
 #include <algorithm>
@@ -10,7 +16,7 @@
 
 void EpsLoader::setInFile(std::string &name) { in_name_ = name; };
 
-void EpsLoader::setOutFile(std::string &name) { out_cdname_ = name; };
+void EpsLoader::setOutFile(std::string &name) { out_name_ = name; };
 
 EpsDatas EpsLoader::readFromFile(std::ifstream &ifs) {
     std::vector<std::vector<std::string>> tokens;
@@ -102,7 +108,7 @@ void EpsLoader::write() {
 
     bool done = false;
     for(auto shape : shapes_) {
-        if (shape->getFillType() == FillType::none)
+        if (shape->getFillType() == FillType::NONE)
             writeLine(out_file, shape);
         else if(!done) {
             done = true;

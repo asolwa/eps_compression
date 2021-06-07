@@ -1,6 +1,7 @@
 /**
- * \file ShapeFactory.cpp
- * \brief Klasa tworząca obiekty Shape
+     * @file shape_factory.cpp
+     * @brief Plik zawierajacy klasę ShapeFactory
+     * @author Piotr Lewandowski
  */
 
 #include "shape_factory.h"
@@ -12,11 +13,11 @@
 std::vector<ShapePtr> ShapeFactory::create(EpsDatas epsData) {
     shapes_.clear();
     for (auto &i:epsData) {
-        if (i->getDataType() == EpsDataType::header) {
+        if (i->getDataType() == EpsDataType::HEADER) {
             convertHeader(i);
-        } else if (i->getDataType() == EpsDataType::alias) {
+        } else if (i->getDataType() == EpsDataType::ALIAS) {
             convertAlias(i);
-        } else if (i->getDataType() == EpsDataType::instruction) {
+        } else if (i->getDataType() == EpsDataType::INSTRUCTION) {
             convertInstruction(i);
         }
     }
@@ -42,7 +43,7 @@ void ShapeFactory::convertHeader(EpsDataPtr &dataPtr) {
     std::ostringstream joined;
     auto data = dataPtr->getTokenValues();
     std::copy(data.begin(), data.end(),
-           std::ostream_iterator<std::string>(joined, " "));
+              std::ostream_iterator<std::string>(joined, " "));
     header_.push_back(joined.str());
 }
 
@@ -55,7 +56,7 @@ std::unordered_map<std::string, std::vector<std::string>> ShapeFactory::getAlias
 }
 
 void ShapeFactory::convertInstruction(EpsDataPtr &dataPtr) {
-    std::setlocale(LC_NUMERIC,"C");
+    std::setlocale(LC_NUMERIC, "C");
     std::stack<std::string> instructionStack;
     std::vector<std::string> instructionVector = dataPtr->getTokenValues();
     std::string currentInstruction;
@@ -123,6 +124,12 @@ void ShapeFactory::convertInstruction(EpsDataPtr &dataPtr) {
                 graphics_.clearPath();
             } else if (currentInstruction == "closepath") {
                 graphics_.closePath();
+            } else if (currentInstruction == "setlinewidth") {
+                if (!instructionStack.empty()) {
+                    float x = stof(instructionStack.top());
+                    instructionStack.pop();
+                    graphics_.setLineWidth(x);
+                }
             } else if (currentInstruction == "mul") {
                 if (instructionStack.size() >= 2) {
                     float y = stof(instructionStack.top());
@@ -164,8 +171,6 @@ void ShapeFactory::convertInstruction(EpsDataPtr &dataPtr) {
                     for (int i = 0; i < n; i++)
                         instructionStack.push(copiedElement);
                 }
-            } else if (currentInstruction == "showpage") {
-
             } else if (currentInstruction == "grestore") {
                 if (!graphicsStack_.empty()) {
                     graphics_ = graphicsStack_.top();
@@ -175,19 +180,19 @@ void ShapeFactory::convertInstruction(EpsDataPtr &dataPtr) {
                 graphicsStack_.push(graphics_);
             } else if (currentInstruction == "fill") {
                 for (auto &subPath:graphics_.getPath()) {
-                    ShapePtr shape(new Shape(subPath, FillType::fill));
+                    ShapePtr shape(new Shape(subPath, FillType::FILL));
                     shapes_.push_back(shape);
                 }
                 graphics_.clearPath();
             } else if (currentInstruction == "eofill") {
                 for (auto &subPath:graphics_.getPath()) {
-                    ShapePtr shape(new Shape(subPath, FillType::eofill));
+                    ShapePtr shape(new Shape(subPath, FillType::EOFILL));
                     shapes_.push_back(shape);
                 }
                 graphics_.clearPath();
             } else if (currentInstruction == "stroke") {
                 for (auto &subPath:graphics_.getPath()) {
-                    ShapePtr shape(new Shape(subPath, FillType::none));
+                    ShapePtr shape(new Shape(subPath, FillType::NONE));
                     shapes_.push_back(shape);
                 }
                 graphics_.clearPath();

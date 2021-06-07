@@ -1,8 +1,8 @@
 /**
- * \file EpsObjects.cpp
- * \brief Klasa reprezentująca alias, header lub instrukcję.
+     * @file eps_objects.cpp
+     * @brief Plik zawierajacy klasę EpsData
+     * @author Piotr Lewandowski
  */
-
 #include <sstream>
 #include <utility>
 

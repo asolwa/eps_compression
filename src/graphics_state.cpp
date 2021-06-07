@@ -1,9 +1,10 @@
 /**
- * \file GraphicsState.cpp
- * \brief Klasa reprezentująca stan graficzny
+     * @file graphics_state.cpp
+     * @brief Plik zawierajacy klasę GraphicsState
+     * @author Piotr Lewandowski
  */
 
-#include "GraphicsState.h"
+#include "graphics_state.h"
 
 #include <utility>
 
@@ -31,7 +32,7 @@ void GraphicsState::closePath() {
             subPaths_.back().push_back(subPaths_.back().front());
 }
 
-void GraphicsState::addToPath(std::pair<float, float>& point) {
+void GraphicsState::addToPath(std::pair<float, float> &point) {
     if (lastMoveTo_) {
         subPaths_.push_back(std::vector<std::pair<float, float>>{currentPoint_, point});
         currentPoint_ = point;
@@ -43,4 +44,12 @@ void GraphicsState::addToPath(std::pair<float, float>& point) {
 void GraphicsState::setCurrentPoint(std::pair<float, float> &point) {
     currentPoint_ = point;
     lastMoveTo_ = true;
+}
+
+void GraphicsState::setLineWidth(double lineWidth) {
+    lineWidth_ = lineWidth;
+}
+
+double GraphicsState::getLineWidth() {
+    return lineWidth_;
 }

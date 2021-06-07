@@ -1,7 +1,7 @@
 /**
- * \file EpsLexer.cpp
- * \brief Klasa będąca reprezentacją leksera
- * \author Piotr Lewandowski
+     * @file eps_lexer.cpp
+     * @brief Plik zawierajacy klasę EpsLexer
+     * @author Piotr Lewandowski
  */
 
 #include "eps_lexer.h"

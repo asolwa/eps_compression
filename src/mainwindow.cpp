@@ -1,7 +1,14 @@
+/**
+     * @file mainwindow.cpp
+     * @brief Plik zawierajacy klasę MainWindow
+     * @author Piotr Lewandowski
+ */
+
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include <QFileDialog>
 #include <QMessageBox>
+
 #include <QDir>
 
 MainWindow::MainWindow(QWidget *parent)
