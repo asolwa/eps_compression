@@ -1,6 +1,11 @@
 #include "shape_factory.h"
 
+#include <iostream>
+#include <sstream>
+#include <iterator>
+
 std::vector<ShapePtr> ShapeFactory::create(EpsDatas epsData) {
+    shapes_.clear();
     for (auto &i:epsData) {
         if (i->getDataType() == EpsDataType::header) {
             convertHeader(i);
@@ -29,14 +34,26 @@ void ShapeFactory::convertAlias(EpsDataPtr &dataPtr) {
 }
 
 void ShapeFactory::convertHeader(EpsDataPtr &dataPtr) {
+    std::ostringstream joined;
+    auto data = dataPtr->getTokenValues();
+    std::copy(data.begin(), data.end(),
+           std::ostream_iterator<std::string>(joined, " "));
+    header_.push_back(joined.str());
+}
 
+std::vector<std::string> ShapeFactory::getHeader() {
+    return header_;
+}
+
+std::unordered_map<std::string, std::vector<std::string>> ShapeFactory::getAlias() {
+    return declaredAliases_;
 }
 
 void ShapeFactory::convertInstruction(EpsDataPtr &dataPtr) {
+    std::setlocale(LC_NUMERIC,"C");
     std::stack<std::string> instructionStack;
     std::vector<std::string> instructionVector = dataPtr->getTokenValues();
     std::string currentInstruction;
-
     size_t s = 0;
     while (s < instructionVector.size() || !pendingInstructions_.empty()) {
         if (!pendingInstructions_.empty()) {
