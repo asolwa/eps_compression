@@ -37,7 +37,7 @@ private slots:
     void on_compressButton_clicked();
 
     /**
-     * Metoda, która określa działanie programu po wciśnięciu przycisku compress.
+     * Metoda, która określa działanie programu po wciśnięciu przycisku openFile.
     */
     void on_openFileButton_clicked();
 
