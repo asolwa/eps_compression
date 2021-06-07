@@ -1,3 +1,9 @@
+/**
+     * @file eps_objects.h
+     * @brief Plik nagłówkowy dla klasy EpsData
+     * @author Piotr Lewandowski
+ */
+
 #ifndef EPS_OBJECTS
 #define EPS_OBJECTS
 
@@ -6,8 +12,15 @@
 #include <memory>
 
 enum class EpsDataType {
-    header, alias, instruction
+    HEADER, ALIAS, INSTRUCTION
 };
+
+/**
+     * @class EpsData
+     * @brief Klasa reprezentująca alias, header lub instrukcję
+     * @details Klasa, która zawiera zbiór tokenów oraz typ (instrukcja, alias, lub header)
+     * @author Piotr Lewandowski
+ */
 
 class EpsData {
 public:

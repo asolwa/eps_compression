@@ -1,3 +1,9 @@
+/**
+     * @file mainwindow.h
+     * @brief Plik nagłówkowy dla klasy MainWindow
+     * @author Piotr Lewandowski
+ */
+
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
@@ -8,6 +14,12 @@
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
+
+/**
+     * @class MainWindow
+     * @brief Klasa będąca podstawa interfejsu graficznego programu
+     * @author Piotr Lewandowski
+ */
 
 class MainWindow : public QMainWindow
 {

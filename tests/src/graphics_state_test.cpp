@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../../src/GraphicsState.h"
+#include "../../src/graphics_state.h"
 
 TEST(GraphicsStateTest, ClearPathTest) {
     GraphicsState graphicsState;

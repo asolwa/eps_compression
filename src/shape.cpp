@@ -1,3 +1,9 @@
+/**
+     * @file shape.cpp
+     * @brief Plik zawierajacy klasę Shape
+     * @author Piotr Lewandowski
+ */
+
 #include "shape.h"
 
 #include <utility>

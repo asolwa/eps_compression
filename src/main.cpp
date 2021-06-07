@@ -1,3 +1,9 @@
+/**
+     * @file main.cpp
+     * @brief Plik zawierajacy funkcję main
+     * @author Piotr Lewandowski
+ */
+
 #include <QApplication>
 #include "mainwindow.h"
 

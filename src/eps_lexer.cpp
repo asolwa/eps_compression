@@ -1,5 +1,13 @@
-#include <regex>
+/**
+     * @file eps_lexer.cpp
+     * @brief Plik zawierajacy klasę EpsLexer
+     * @author Piotr Lewandowski
+ */
+
 #include "eps_lexer.h"
+
+#include <regex>
+
 #include "eps_objects.h"
 
 std::vector<std::string> EpsLexer::tokenize(std::istream &ifs) {

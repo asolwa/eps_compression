@@ -1,3 +1,9 @@
+/**
+     * @file eps_parser.cpp
+     * @brief Plik zawierajacy klasę EpsParser
+     * @author Piotr Lewandowski
+ */
+
 #include <iostream>
 #include <regex>
 #include "eps_parser.h"
@@ -14,25 +20,26 @@ EpsDatas EpsParser::parse(std::vector<std::vector<std::string>> &tokenData) {
         currentTokens.insert(currentTokens.end(), tokens.begin(), tokens.end());
         if (!currentTokens.empty()) {
             if (regex_match(currentTokens[0], regex_header)) {
-                EpsDataPtr header(new EpsData(EpsDataType::header, currentTokens));
+                EpsDataPtr header(new EpsData(EpsDataType::HEADER, currentTokens));
                 eps_datas_.push_back(std::move(header));
                 currentTokens.clear();
-            } else if (regex_match(currentTokens[0], regex_alias_beginning) && (tokens.size() == 1 || currentTokens[1] == "{")) {
+            } else if (regex_match(currentTokens[0], regex_alias_beginning) &&
+                       (tokens.size() == 1 || currentTokens[1] == "{")) {
                 int size = currentTokens.size();
                 if (size >= 5) {
                     if (currentTokens[1] == "{" && currentTokens[size - 2] == "}" && currentTokens[size - 1] == "def") {
-                        EpsDataPtr alias(new EpsData(EpsDataType::alias, currentTokens));
+                        EpsDataPtr alias(new EpsData(EpsDataType::ALIAS, currentTokens));
                         eps_datas_.push_back(std::move(alias));
                         currentTokens.clear();
                     } else if (size >= 6 && currentTokens[1] == "{" && currentTokens[size - 3] == "}" &&
                                currentTokens[size - 2] == "bind" && currentTokens[size - 1] == "def") {
-                        EpsDataPtr alias(new EpsData(EpsDataType::alias, currentTokens));
+                        EpsDataPtr alias(new EpsData(EpsDataType::ALIAS, currentTokens));
                         eps_datas_.push_back(std::move(alias));
                         currentTokens.clear();
                     }
                 }
             } else {
-                EpsDataPtr instruction(new EpsData(EpsDataType::instruction, currentTokens));
+                EpsDataPtr instruction(new EpsData(EpsDataType::INSTRUCTION, currentTokens));
                 eps_datas_.push_back(std::move(instruction));
                 currentTokens.clear();
             }

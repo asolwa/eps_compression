@@ -1,3 +1,9 @@
+/**
+     * @file eps_parser.h
+     * @brief Plik nagłówkowy dla klasy EpsParser
+     * @author Piotr Lewandowski
+ */
+
 #ifndef EPS_PARSER
 #define EPS_PARSER
 
@@ -11,6 +17,14 @@
 
 using EpsDataPtr = std::shared_ptr<EpsData>;
 using EpsDatas = std::vector<EpsDataPtr>;
+
+/**
+     * @class EpsParser
+     * @brief Klasa będąca reprezentacją parsera
+     * @details Klasa, której zadaniem jest podzielenielenie
+                otrzymanych tokenów na instrukcje, aliasy i headery.
+     * @author Piotr Lewandowski
+ */
 
 class EpsParser {
 public:

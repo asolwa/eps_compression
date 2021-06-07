@@ -19,7 +19,7 @@ set(SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/eps_parser.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/shape_factory.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/shape.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/GraphicsState.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/graphics_state.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/compressor_decorator.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/compressor.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/skip_n_compressor.cpp
@@ -35,7 +35,7 @@ SET(MODULE_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/eps_parser.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/shape_factory.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/shape.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/GraphicsState.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/graphics_state.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/compressor_decorator.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/compressor.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/skip_n_compressor.cpp
