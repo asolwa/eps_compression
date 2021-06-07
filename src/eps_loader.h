@@ -27,6 +27,7 @@ public:
 
 private:
     void writeLine(std::ofstream &out_file, ShapePtr &shape);
+    void writePoints(std::ofstream &out_file);
     void writeAliases(std::ofstream &out_file);
 
     std::string in_name_;

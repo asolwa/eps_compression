@@ -4,11 +4,13 @@
  */
 
 #include "shape_factory.h"
+
 #include <iostream>
 #include <sstream>
 #include <iterator>
 
 std::vector<ShapePtr> ShapeFactory::create(EpsDatas epsData) {
+    shapes_.clear();
     for (auto &i:epsData) {
         if (i->getDataType() == EpsDataType::header) {
             convertHeader(i);
@@ -57,7 +59,6 @@ void ShapeFactory::convertInstruction(EpsDataPtr &dataPtr) {
     std::stack<std::string> instructionStack;
     std::vector<std::string> instructionVector = dataPtr->getTokenValues();
     std::string currentInstruction;
-
     size_t s = 0;
     while (s < instructionVector.size() || !pendingInstructions_.empty()) {
         if (!pendingInstructions_.empty()) {
