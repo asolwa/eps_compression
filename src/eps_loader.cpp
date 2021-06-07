@@ -100,8 +100,21 @@ void EpsLoader::write() {
 
     writeAliases(out_file);
 
+    bool done = false;
+    for(auto shape : shapes_) {
+        if (shape->getFillType() == FillType::none)
+            writeLine(out_file, shape);
+        else if(!done) {
+            done = true;
+            writePoints(out_file);
+        }
+    }
+    out_file.close();
+}
+
+void EpsLoader::writePoints(std::ofstream &out_file) {
     PointsA data = convertPoints(shapes_);
-    std::shared_ptr<epsc::Compressor> comp_ = std::make_shared<epsc::Compressor>();
+
     out_file << "bp" << std::endl;
     for(auto el = data.begin(); el != data.end(); ++el) {
         if(std::get<0>(*el) != -1) {
@@ -109,13 +122,6 @@ void EpsLoader::write() {
         }
     }
     out_file << "ep" << std::endl;
-    // for(auto shape : shapes_) {
-    //     if (shape->getFillType() == FillType::none)
-    //         writeLine(out_file, shape);
-
-    // }
-
-    out_file.close();
 }
 
 void EpsLoader::writeLine(std::ofstream &out_file, ShapePtr &shape) {
