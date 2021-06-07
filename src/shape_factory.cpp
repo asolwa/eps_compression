@@ -3,12 +3,11 @@
      * @brief Plik zawierajacy klasę ShapeFactory
      * @author Piotr Lewandowski
  */
-
-#include "shape_factory.h"
-
 #include <iostream>
 #include <sstream>
 #include <iterator>
+
+#include "shape_factory.h"
 
 std::vector<ShapePtr> ShapeFactory::create(EpsDatas epsData) {
     shapes_.clear();
@@ -44,7 +43,8 @@ void ShapeFactory::convertHeader(EpsDataPtr &dataPtr) {
     auto data = dataPtr->getTokenValues();
     std::copy(data.begin(), data.end(),
               std::ostream_iterator<std::string>(joined, " "));
-    header_.push_back(joined.str());
+    if (joined.str() != "%%EOF ")
+        header_.push_back(joined.str());
 }
 
 std::vector<std::string> ShapeFactory::getHeader() {

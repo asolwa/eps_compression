@@ -24,6 +24,7 @@ set(SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/compressor.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/skip_n_compressor.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/radius_compressor.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/points_joiner.cpp
 )
 
 SET(MODULE_SOURCES
@@ -40,6 +41,7 @@ SET(MODULE_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/compressor.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/skip_n_compressor.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/radius_compressor.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/points_joiner.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

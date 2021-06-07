@@ -1,18 +1,9 @@
-/**
-     * @file eps_loader.cpp
-     * @brief Plik zawierajacy klasę EpsLoader
-     * @author Adam Solawa
- */
-
 #include <fstream>
 #include <string>
-#include <algorithm>
 #include "eps_loader.h"
 #include "compressor.h"
 #include "skip_n_compressor.h"
 #include "radius_compressor.h"
-#include <cmath>
-#include <tuple>
 
 void EpsLoader::setInFile(std::string &name) { in_name_ = name; };
 
@@ -26,68 +17,6 @@ EpsDatas EpsLoader::readFromFile(std::ifstream &ifs) {
     return parser_.parse(tokens);
 }
 
-
-using Point = std::pair<float, float>;
-using PointA = std::tuple<float, float, float, float>;
-using Points = std::vector<Point>;
-using PointsA = std::vector<PointA>;
-PointsA convertPoints(std::vector<ShapePtr> &shapes_) {
-
-    PointsA result;
-    PointsA result2;
-    int thr = 0.5;
-    for(auto shape : shapes_) {
-        float x=0;
-        float y=0;
-        float rx=0;
-        float ry=0;
-        Points points_ = shape->getPoints();
-
-
-        int factor = 20;
-        x = trunc(points_[0].first*factor)/factor;
-        y = trunc(points_[0].second*factor)/factor;
-        rx = trunc((points_[1].second - points_[0].second)*factor)/factor;
-        ry = trunc((points_[2].first - points_[1].first)*factor)/factor;
-        result.push_back({x, y, rx, ry});
-    }
-
-    std::sort(result.begin(), result.end(), [](const PointA &a, const PointA &b) {
-        return (std::get<0>(a) < std::get<0>(b));
-    });
-
-    for(auto element = result.begin(); element != result.end(); ++element) {
-        float curent_line = std::get<0>(*element);
-        float curent_line1 = std::get<1>(*element);
-        auto upper = std::upper_bound(result.begin(), result.end(), curent_line, [](float curent_line, PointA &a) {
-            return curent_line < std::get<0>(a);
-        });
-        if(upper != result.end() && (upper-1) != element ) {
-            std::sort(element, upper, [](const PointA &a, const PointA &b) {
-                return (std::get<1>(a) < std::get<1>(b));
-            });
-        }
-    }
-
-    for(auto first = result.begin(); first != result.end()-1; ++first) {
-        if(std::get<0>(*first) != -1) {
-            for(auto sec = first + 1; sec != result.end() && ( std::get<0>(*first) == std::get<0>(*sec) || std::get<0>(*sec) == -1); ++sec) {
-                if(std::get<0>(*sec) != -1) {
-                    if (abs(std::get<1>(*first) - std::get<1>(*sec)) < thr) {
-                        std::get<0>(*sec) = -1;
-                    } else if (abs(std::get<1>(*first) - std::get<1>(*sec)) < thr + std::get<2>(*first)) {
-                        std::get<3>(*first) += std::get<3>(*sec);
-                        std::get<3>(*first) -= (std::get<1>(*sec) - std::get<1>(*first));
-                        std::get<0>(*sec) = -1;
-                    } else
-                        break;
-                }
-            }
-        }
-    }
-    return result;
-}
-
 void EpsLoader::load() {
     std::ifstream in_file(in_name_);
     eps_datas_ = readFromFile(in_file);
@@ -96,12 +25,10 @@ void EpsLoader::load() {
 }
 
 void EpsLoader::write() {
-    std::ofstream out_file("wynik1.eps");
+    std::ofstream out_file(out_name_);
 
     for(auto header_element : shapeFactory_.getHeader()) {
         out_file << header_element << std::endl;
-        if(header_element == "%%BeginProlog ")
-            break;
     }
 
     writeAliases(out_file);
@@ -119,7 +46,8 @@ void EpsLoader::write() {
 }
 
 void EpsLoader::writePoints(std::ofstream &out_file) {
-    PointsA data = convertPoints(shapes_);
+    PointsJoiner joiner(20, 0.5);
+    Points data = joiner.join(shapes_);
 
     out_file << "bp" << std::endl;
     for(auto el = data.begin(); el != data.end(); ++el) {

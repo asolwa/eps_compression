@@ -18,6 +18,7 @@
 #include "eps_parser.h"
 #include "shape.h"
 #include "shape_factory.h"
+#include "points_joiner.h"
 
 using EpsDataPtr = std::shared_ptr<EpsData>;
 using EpsDatas = std::vector<EpsDataPtr>;
