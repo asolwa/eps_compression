@@ -7,7 +7,7 @@
 namespace epsc {
     
     RadiusCompressor::RadiusCompressor(std::shared_ptr<Compressor> dec, int radius)
-        : BaseCompressorDecorator(dec), thr_(1) {}
+        : BaseCompressorDecorator(dec), thr_(radius*radius) {}
 
     bool RadiusCompressor::closer_than_radius(const Point &a, const Point &b){
         float dist_x = a.first - b.first;
@@ -19,17 +19,16 @@ namespace epsc {
     PointData RadiusCompressor::compress(const PointData &data) {
         PointData comp_data = BaseCompressorDecorator::compress(data);
 
-        PointData comp_result;
+        PointData comp_result = comp_data;
         Point last_point;
         int counter = 0;
-        for(auto &element : comp_data) {
-            if (
-                &element == &comp_data.front() ||
-                &element == &comp_data.back() ||
-                !closer_than_radius(last_point, element)
-            ){
-                comp_result.push_back(element);
-                last_point = element;
+        for(auto first_el = comp_result.begin() ; first_el != comp_result.end() ; ++first_el) {
+            for(auto sec_el = first_el + 1 ; sec_el != comp_result.end() ;) {
+                if ( closer_than_radius(*first_el, *sec_el) ){
+                    sec_el = comp_result.erase(sec_el);
+                } else {
+                    ++sec_el;
+                }
             }
         }
         return comp_result;

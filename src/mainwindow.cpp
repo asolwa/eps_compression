@@ -16,8 +16,10 @@ MainWindow::~MainWindow() {
 void MainWindow::on_compressButton_clicked() {
     if (openedFileName.empty())
         QMessageBox::warning(this, " ", "No file to compress");
-    else
+    else {
         QMessageBox::about(this, " ", "File was successfully compressed");
+        fileLoader.write();
+    }
 }
 
 void MainWindow::on_openFileButton_clicked() {
