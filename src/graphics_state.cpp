@@ -8,7 +8,7 @@
 
 #include <utility>
 
-GraphicsState::GraphicsState() : lastMoveTo_(false), lineWidth_(0) {}
+GraphicsState::GraphicsState() : lastMoveTo_(false), lineWidth_(1) {}
 
 std::vector<std::vector<std::pair<float, float>>> GraphicsState::getPath() {
     return subPaths_;
@@ -50,6 +50,6 @@ void GraphicsState::setLineWidth(double lineWidth) {
     lineWidth_ = lineWidth;
 }
 
-double GraphicsState::getLineWidth() {
+double GraphicsState::getLineWidth() const {
     return lineWidth_;
 }

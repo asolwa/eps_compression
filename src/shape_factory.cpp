@@ -10,6 +10,8 @@
 #include "shape_factory.h"
 
 std::vector<ShapePtr> ShapeFactory::create(EpsDatas epsData) {
+    header_.clear();
+    declaredAliases_.clear();
     shapes_.clear();
     for (auto &i:epsData) {
         if (i->getDataType() == EpsDataType::HEADER) {

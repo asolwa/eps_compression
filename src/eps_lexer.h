@@ -28,6 +28,11 @@ using EpsDatas = std::vector<EpsDataPtr>;
 
 class EpsLexer {
 public:
+    /**
+     * Metoda, która dzieli strumień danych na tokeny, gdzie każdy token to ciag znaków nieoddzielonych spacja
+     * i zwraca wektor tych tokenów.
+     * @param ifs Strumień danych do tokenizacji.
+    */
     std::vector<std::string> tokenize(std::istream& ifs);
 };
 

@@ -23,6 +23,8 @@ enum class FillType {
 class Shape {
 public:
     Shape(std::vector<std::pair<float, float>> points, FillType fillType);
+    Shape & operator=(const Shape&) = delete;
+    Shape(const Shape &shape) = delete;
 
     std::vector<std::pair<float, float>> getPoints() const;
 
